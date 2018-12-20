@@ -25,18 +25,7 @@ class Centers extends React.Component {
 
     render() {
       return (
-        <div className="columns">
-          {/*{this.state.centers.map(center => {*/}
-            {/*console.log(center)*/}
-            {/*return (*/}
-                {/*<div className="column">*/}
-                    {/*<CentersList*/}
-                      {/*key={center.id}*/}
-                      {/*center={center}*/}
-                    {/*/>*/}
-                {/*</div>*/}
-            {/*);*/}
-          {/*})}*/}
+        <div className="columns is-multiline">
           <CentersList centers={this.state.centers}  />
         </div>
       );

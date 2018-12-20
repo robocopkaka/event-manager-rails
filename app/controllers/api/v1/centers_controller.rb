@@ -13,6 +13,10 @@ module Api::V1
       end
     end
 
+    def update
+
+    end
+
     def index
       @centers = Center.all
       json_response(@centers, 'centers', 'List of centers', :ok)

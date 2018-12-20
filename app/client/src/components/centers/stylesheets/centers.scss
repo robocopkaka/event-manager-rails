@@ -1,0 +1,42 @@
+@import "~bulma";
+@import "~bulma-extensions/bulma-divider/dist/css/bulma-divider";
+#center-column {
+  //height: 500px;
+  #center-card {
+    //height: 480px;
+    border-radius: 10px;
+    .center-name {
+      text-align: center;
+      font-size: 25px;
+      font-weight: bold;
+    }
+    .card-content {
+      height: 200px;
+    }
+    .card-footer {
+      border-radius: 0 0 10px 10px;
+      color: white;
+      height: 70px;
+      display: flex;
+      flex-direction: row;
+      //top: 0;
+      //right: 0;
+      //left: 0;
+      //right: 0pc;
+      background: #4A2545;
+      #center-capacity {
+        text-align: center;
+        width: 50%;
+        padding: 10px 0 10px 20px;
+        #capacity-heading {
+          font-weight: bold;
+        }
+      }
+      #center-others {
+        text-align: center;
+        width: 50%;
+        padding: 10px 20px 10px 0;
+      }
+    }
+  }
+}
