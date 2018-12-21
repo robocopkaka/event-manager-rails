@@ -3,10 +3,9 @@ import PropTypes from 'prop-types';
 import event from '../../../images/Events-1200x630.jpg';
 import '../stylesheets/centers.scss';
 
-const MAX_LENGTH = 100;
+const MAX_LENGTH = 50;
 
 const CentersList = ({centers}) => (
-  // console.log(props)
   <React.Fragment>
     {centers.map(center => (
         <div className="column is-one-quarter" id="center-column" key={center.id}>
@@ -20,6 +19,9 @@ const CentersList = ({centers}) => (
               <div className="content">
                 <div className="center-name">{center.name}</div>
                 <div className="center-address">
+                  {center.address}
+                </div>
+                <div className="center-description">
                   {center.description.length > MAX_LENGTH ?
                     (
                       <div>
@@ -39,8 +41,8 @@ const CentersList = ({centers}) => (
               </div>
               <div className="is-divider-vertical" />
               <div id="center-others">
-                <span id="capacity-heading">Others</span> <br/>
-                <span>N/A</span>
+                <span id="capacity-heading">Book</span> <br/>
+                <span>Now</span>
               </div>
             </footer>
           </div>
