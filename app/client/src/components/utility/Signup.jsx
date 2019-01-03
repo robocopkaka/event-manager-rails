@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
+import classNames from 'classnames';
 import { connect } from 'react-redux';
 import './stylesheets/signup.scss';
+import validateForm from '../../helpers/signupValidator';
 
 class Signup extends Component {
   constructor(props) {
@@ -9,10 +11,17 @@ class Signup extends Component {
       name: '',
       email: '',
       password: '',
-      passwordConfirmation: ''
+      passwordConfirmation: '',
+      errorMessages: {
+        name: '', email: '', password: '', passwordConfirmation: ''
+      },
+      formValidity: {
+        name: true, email: true, password: true, passwordConfirmation: true
+      },
+      formValid: true
     };
     this.handleChange = this.handleChange.bind(this);
-    this.logState = this.logState.bind(this);
+    this.signup = this.signup.bind(this);
   }
 
   handleChange(e) {
@@ -25,11 +34,20 @@ class Signup extends Component {
     // console.log(e.target.name);
   }
 
-  logState(e) {
+  signup(e) {
     e.preventDefault();
-    console.log(this.state)
+    this.setState(validateForm);
+
   }
   render() {
+    const nameClasses = classNames('input', { 'is-danger': !this.state.formValidity.name });
+    const nameErrorClasses = classNames('help is-danger', { 'display-none': this.state.formValidity.name });
+    const emailClasses = classNames('input', { 'is-danger': !this.state.formValidity.email });
+    const emailErrorClasses = classNames('help is-danger', { 'display-none': this.state.formValidity.email });
+    const passwordClasses = classNames('input', { 'is-danger': !this.state.formValidity.password });
+    const passwordConfirmationClasses = classNames('input', { 'is-danger': !this.state.formValidity.passwordConfirmation });
+    const passwordErrorClasses = classNames('help is-danger', { 'display-none': this.state.formValidity.password });
+    const passwordConfirmationErrorClasses = classNames('help is-danger', { 'display-none': this.state.formValidity.passwordConfirmation });
     return (
       <div className="centered-form">
         <form className="is-6" id="signup-form">
@@ -39,7 +57,7 @@ class Signup extends Component {
               <input
                 type="text"
                 name="name"
-                className="input"
+                className={nameClasses}
                 placeholder="Enter you name"
                 value={this.state.name}
                 onChange={this.handleChange}
@@ -48,6 +66,7 @@ class Signup extends Component {
                 <i className="fa fa-user" />
               </span>
             </div>
+            <p className={nameErrorClasses}>{this.state.errorMessages.name}</p>
           </div>
           <div className="field">
             <label htmlFor="email" className="label">Email</label>
@@ -55,7 +74,7 @@ class Signup extends Component {
               <input
                 type="email"
                 name="email"
-                className="input"
+                className={emailClasses}
                 placeholder="Enter you email address"
                 value={this.state.email}
                 onChange={this.handleChange}
@@ -64,6 +83,7 @@ class Signup extends Component {
                 <i className="fa fa-envelope" />
               </span>
             </div>
+            <p className={emailErrorClasses}>{this.state.errorMessages.email}</p>
           </div>
           <div className="field">
             <label htmlFor="password" className="label">Password</label>
@@ -71,7 +91,7 @@ class Signup extends Component {
               <input
                 type="password"
                 name="password"
-                className="input"
+                className={passwordClasses}
                 placeholder="Enter your password..."
                 value={this.state.password}
                 onChange={this.handleChange}
@@ -80,6 +100,7 @@ class Signup extends Component {
                 <i className="fa fa-lock"/>
               </span>
             </div>
+            <p className={passwordErrorClasses}>{this.state.errorMessages.password}</p>
           </div>
           <div className="field">
             <label htmlFor="password-confirmation" className="label">Password Confirmation</label>
@@ -87,7 +108,7 @@ class Signup extends Component {
               <input
                 type="password"
                 name="passwordConfirmation"
-                className="input"
+                className={passwordConfirmationClasses}
                 placeholder="Confirm your password"
                 value={this.state.passwordConfirmation}
                 onChange={this.handleChange}
@@ -96,10 +117,11 @@ class Signup extends Component {
                 <i className="fa fa-lock" />
               </span>
             </div>
+            <p className={passwordConfirmationErrorClasses}>{this.state.errorMessages.passwordConfirmation}</p>
           </div>
           <div className="field is-grouped is-grouped-centered">
             <p className="control">
-              <a className="button is-primary" onClick={this.logState}>
+              <a className="button is-primary" onClick={this.signup}>
                 Signup
               </a>
             </p>
