@@ -1,7 +1,18 @@
 import validator from 'validator';
 
+// Loop through the items in the formValidity object
+// and set all of them to true. This helps clear
+// warnings on fields whose inputs have been corrected after an initial
+// error.
+function setValidAttributesToTrue(form) {
+  for (const key in form) {
+    form[key] = true;
+  }
+}
+
 export default function validateForm(state) {
   const newState = Object.assign({}, state);
+  setValidAttributesToTrue(newState.formValidity)
   if(validator.isEmpty(newState.name)) {
     newState.errorMessages.name = 'Name is missing';
     newState.formValidity.name = false;

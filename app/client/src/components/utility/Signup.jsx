@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import classNames from 'classnames';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import './stylesheets/signup.scss';
 import validateForm from '../../helpers/signupValidator';
+import * as authActions from '../../actions/authActions';
 
 class Signup extends Component {
   constructor(props) {
@@ -26,7 +28,7 @@ class Signup extends Component {
 
   handleChange(e) {
     e.preventDefault();
-    const { state} = this;
+    const { state } = this;
     const { name, value } = e.target;
     this.setState({
       [name]: value
@@ -36,8 +38,18 @@ class Signup extends Component {
 
   signup(e) {
     e.preventDefault();
+    const { formValidity, name, email, password, passwordConfirmation } = this.state;
     this.setState(validateForm);
-
+    const formHasErrors = Object.keys(formValidity).some(key => formValidity[key] === false);
+    if (!formHasErrors) {
+      const user = {
+        name,
+        email,
+        password,
+        password_confirmation: passwordConfirmation
+      };
+      this.props.actions.signup(user);
+    }
   }
   render() {
     const nameClasses = classNames('input', { 'is-danger': !this.state.formValidity.name });
@@ -132,4 +144,16 @@ class Signup extends Component {
   }
 }
 
-export default Signup;
+function mapStateToProps(state, ownProps) {
+  return {
+    authenticated: state.auth.authenticated
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(authActions, dispatch)
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Signup);

@@ -1,3 +1,8 @@
 export default {
-  centers: []
+  centers: [],
+  auth: {
+    authenticated: false,
+    currentUser: {},
+    message: {}
+  }
 };

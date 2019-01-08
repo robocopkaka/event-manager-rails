@@ -4,12 +4,11 @@ module Response
     # Not doing this will render the entire user object
     object = ActiveModelSerializers::SerializableResource.new(object).as_json
     response = {
-      status: status,
       message: message,
       data: {
         "#{key}": object
       }
     }
-    render json: response
+    render json: response, status: status
   end
 end

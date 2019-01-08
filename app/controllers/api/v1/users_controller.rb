@@ -2,12 +2,8 @@ module Api::V1
   class UsersController < ApplicationController
     before_action :authenticate_user, only: :show
     def create
-      @user = User.new(user_params)
-      if @user.save
-        json_response(@user, 'user', 'User was successfully created', :created)
-      else
-        json_response(@user.errors, 'user', 'Your operation had some errors', :unprocessible_entity)
-      end
+      @user = User.create!(user_params)
+      json_response(@user, 'user', 'User was successfully created', :created)
     end
 
     def show
@@ -22,7 +18,7 @@ module Api::V1
     private
 
     def user_params
-      params.require(:user).permit(:name, :email, :password, :password_confirmation)
+      params.require(:user).permit(:name, :email, :password_digest, :password, :password_confirmation)
     end
   end
 end
