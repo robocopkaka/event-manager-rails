@@ -3,6 +3,7 @@ export default {
   auth: {
     authenticated: false,
     currentUser: {},
-    message: {}
+    message: '',
+    errorMessage: ''
   }
 };

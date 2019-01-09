@@ -4,8 +4,8 @@ export function signupSuccess(user) {
   return { type: 'SIGNUP_SUCCESS' }
 }
 
-export function signupFailure() {
-  return { type: 'SIGNUP_FAILURE' }
+export function signupFailure(data) {
+  return { type: 'SIGNUP_FAILURE', data }
 }
 
 export function signupLoading() {
@@ -13,17 +13,17 @@ export function signupLoading() {
 }
 
 export function signup(user) {
-  console.log(user);
+  // console.log(user);
   const authUser = { user };
   return (dispatch) => {
     dispatch(signupLoading());
     return AuthApi.signup(authUser)
       .then((response) => {
-        dispatch(signupSuccess(response))
+        dispatch(signupSuccess(response));
       })
       .catch((error) => {
-        console.log(error)
-        dispatch(signupFailure())
+        dispatch(signupFailure(error.response.data));
+        throw error.response.data.message;
       });
   };
 }

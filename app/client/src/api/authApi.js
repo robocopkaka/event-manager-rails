@@ -8,7 +8,10 @@ class AuthApi {
       }
     })
       .then(response => response.data)
-      .catch(error => new Error(error))
+      .catch((error) => {
+        // console.log(error)
+        throw error;
+      });
   }
 }
 

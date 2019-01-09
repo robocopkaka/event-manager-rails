@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import classNames from 'classnames';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { toast } from 'bulma-toast';
 import './stylesheets/signup.scss';
 import validateForm from '../../helpers/signupValidator';
 import * as authActions from '../../actions/authActions';
@@ -48,7 +49,23 @@ class Signup extends Component {
         password,
         password_confirmation: passwordConfirmation
       };
-      this.props.actions.signup(user);
+      this.props.actions.signup(user)
+        .then(() => {
+          toast({
+            message: 'Logged in successfully',
+            type: 'is-success',
+            dismissible: true,
+            position: 'top-right'
+          })
+        })
+        .catch((error) => {
+          toast({
+            message: error,
+            type: 'is-danger',
+            dismissible: true,
+            position: 'top-right'
+          })
+        })
     }
   }
   render() {
