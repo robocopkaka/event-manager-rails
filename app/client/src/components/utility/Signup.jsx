@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import classNames from 'classnames';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { toast } from 'bulma-toast';
+import Toast from './Toast';
+import clearFields from '../../helpers/clearFields';
 import './stylesheets/signup.scss';
 import validateForm from '../../helpers/signupValidator';
 import * as authActions from '../../actions/authActions';
@@ -34,15 +35,17 @@ class Signup extends Component {
     this.setState({
       [name]: value
     });
-    // console.log(e.target.name);
+  }
+
+  validForm() {
+    return validateForm(this.state).formValid;
   }
 
   signup(e) {
     e.preventDefault();
-    const { formValidity, name, email, password, passwordConfirmation } = this.state;
     this.setState(validateForm);
-    const formHasErrors = Object.keys(formValidity).some(key => formValidity[key] === false);
-    if (!formHasErrors) {
+    const { name, email, password, passwordConfirmation } = this.state;
+    if (this.validForm()) {
       const user = {
         name,
         email,
@@ -51,20 +54,9 @@ class Signup extends Component {
       };
       this.props.actions.signup(user)
         .then(() => {
-          toast({
-            message: 'Logged in successfully',
-            type: 'is-success',
-            dismissible: true,
-            position: 'top-right'
-          })
+          this.setState(clearFields);
         })
-        .catch((error) => {
-          toast({
-            message: error,
-            type: 'is-danger',
-            dismissible: true,
-            position: 'top-right'
-          })
+        .catch(() => {
         })
     }
   }
@@ -156,6 +148,9 @@ class Signup extends Component {
             </p>
           </div>
         </form>
+        {this.props.message ? (
+          <Toast message={this.props.message} type={this.props.toastType} />
+        ) : (<React.Fragment />)}
       </div>
     );
   }
@@ -163,7 +158,10 @@ class Signup extends Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-    authenticated: state.auth.authenticated
+    authenticated: state.auth.authenticated,
+    message: state.auth.message,
+    errorMessage: state.auth.errorMessage,
+    toastType: state.auth.toastType
   };
 }
 

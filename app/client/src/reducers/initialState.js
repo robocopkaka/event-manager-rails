@@ -4,6 +4,7 @@ export default {
     authenticated: false,
     currentUser: {},
     message: '',
+    toastType: '',
     errorMessage: ''
   }
 };
