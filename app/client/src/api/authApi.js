@@ -13,6 +13,18 @@ class AuthApi {
         throw error;
       });
   }
+
+  static login(user) {
+    return axios.post('api/v1/user_token', user, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(response =>response.data)
+      .catch((error) => {
+        throw error;
+      });
+  }
 }
 
 export default AuthApi;

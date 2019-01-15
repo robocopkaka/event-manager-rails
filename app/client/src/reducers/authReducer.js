@@ -4,7 +4,7 @@ import initialState from './initialState';
 
 export default function authReducer(state = initialState.auth, action) {
   let newState = {};
-  switch(action.type) {
+  switch (action.type) {
     case types.SIGNUP_SUCCESS:
       newState = update(state, {
         authenticated: {  $set: true },
@@ -23,6 +23,33 @@ export default function authReducer(state = initialState.auth, action) {
       newState = update(state, {
         message: { $set: '' },
         toastType: { $set: '' },
+      });
+      return newState;
+    case types.LOGIN_SUCCESS:
+      newState = update(state, {
+        authorization: { $set: true },
+        currentUser: { $set: action.user },
+        isLoading: { $set: false },
+        toastType: { $set: 'is-success' },
+        message: { $set: 'Logged in successfully' }
+      });
+      return newState;
+    case types.LOGIN_FAILURE:
+      newState = update(state, {
+        isLoading: { $set: false },
+        toastType: { $set: 'is-danger' },
+        message: { $set: 'Invalid username/password' }
+      })
+    case types.AUTH_LOADING:
+      newState = update(state, {
+        isLoading: { $set: true }
+      });
+      return newState;
+    case types.LOGOUT_SUCCESS:
+      newState = update(state, {
+        authenticated: { $set: false },
+        currentUser: { $set: '' },
+        isLoading: { $set: false }
       });
       return newState;
     default:

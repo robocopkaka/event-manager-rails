@@ -2,9 +2,10 @@ export default {
   centers: [],
   auth: {
     authenticated: false,
-    currentUser: {},
+    userId: '',
     message: '',
     toastType: '',
-    errorMessage: ''
+    errorMessage: '',
+    isLoading: false
   }
 };
