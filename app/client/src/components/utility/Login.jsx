@@ -4,7 +4,8 @@ import { connect } from 'react-redux';
 import classNames from 'classnames';
 import './stylesheets/signup.scss';
 import Toast from './Toast';
-import loginValidator from '../../helpers/validators/login'
+import loginValidator from '../../helpers/validators/login';
+import resetLoginFields from '../../helpers/resetLoginFields';
 import * as authActions from '../../actions/authActions';
 
 class Login extends Component {
@@ -44,6 +45,7 @@ class Login extends Component {
           password
         }
       };
+      this.setState(resetLoginFields)
       this.props.actions.login(user);
     }
   }

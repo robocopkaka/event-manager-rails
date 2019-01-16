@@ -1,9 +1,9 @@
 export default function clearFields(state) {
   const { formValidity, errorMessages } = state;
-  for (const[key] in formValidity) {
+  for (const key in formValidity) {
     formValidity[key] = true;
   }
-  for (const[key] in errorMessages) {
+  for (const key  in errorMessages) {
     errorMessages[key] = '';
   }
 
