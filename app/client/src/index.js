@@ -1,9 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
+import { Router } from 'react-router-dom';
 import './index.css';
 import configureStore from './store/configureStore';
 import App from './App';
+import history from './history';
 import * as serviceWorker from './serviceWorker';
 import {fetchCenters} from "./actions/centerActions";
 
@@ -12,7 +14,9 @@ store.dispatch(fetchCenters());
 
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <Router history={history}>
+      <App />
+    </Router>
   </Provider>, document.getElementById('root')
 );
 

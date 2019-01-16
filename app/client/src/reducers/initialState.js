@@ -1,3 +1,11 @@
 export default {
-  centers: []
+  centers: [],
+  auth: {
+    authenticated: false,
+    userId: '',
+    message: '',
+    toastType: '',
+    errorMessage: '',
+    isLoading: false
+  }
 };

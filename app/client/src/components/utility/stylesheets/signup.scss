@@ -1,0 +1,25 @@
+.centered-form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 35em;
+  #signup-form {
+    //max-width: 50%;
+    width: 40%;
+    background: #FFF;
+    border: 0.5px solid #4A2545;
+    padding: 25px;
+    -webkit-box-shadow: 3px 3px 5px 5px #ccc;
+    -moz-box-shadow: 3px 3px 5px 5px #ccc;
+    box-shadow: 3px 3px 5px 5px #ccc;
+  }
+  .is-primary {
+    background: #4A2545;
+    &:hover {
+      background: #4A2545;
+    }
+  }
+  .display-none {
+    display: none;
+  }
+}

@@ -1,5 +1,6 @@
 module Api::V1
   class UserTokenController < Knock::AuthTokenController
+    include Error::ErrorHandler
     skip_before_action :verify_authenticity_token, raise: false
   end
 end
