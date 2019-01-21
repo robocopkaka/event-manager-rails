@@ -1,16 +1,12 @@
 # frozen_string_literal: true
 module Api::V1
   class CentersController < ApplicationController
-    def create
-      @center = Center.new(center_params)
+    # before_action :authenticate_user, only: %i[create update]
+    before_action :is_admin?, only: %i[create update]
 
-      if @center.save
-        json_response(@center, 'center', 'Center was successfully created', :created)
-        # render json: @center, status: :created
-      else
-        json_response(@center.errors, 'errors', 'Operation had some errors', :unprocessable_entity)
-        # render json: @center.errors, status: :unprocessable_entity
-      end
+    def create
+      @center = Center.create!(center_params)
+      json_response(@center, 'center', 'Center was successfully created', :created)
     end
 
     def update
@@ -25,7 +21,13 @@ module Api::V1
     private
 
     def center_params
-      params.require(:center).permit(:name, :description, :address, :capacity)
+      params.require(:center).permit(:name, :description, :address, :capacity, :image)
+    end
+
+    private
+
+    def is_admin?
+      head :forbidden unless current_user.admin
     end
   end
 end
