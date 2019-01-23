@@ -5,7 +5,9 @@ module Api::V1
     before_action :is_admin?, only: %i[create update]
 
     def create
+      binding.pry
       @center = Center.create!(center_params)
+      @center.image.attach(params[:center][:image])
       json_response(@center, 'center', 'Center was successfully created', :created)
     end
 
@@ -21,7 +23,7 @@ module Api::V1
     private
 
     def center_params
-      params.require(:center).permit(:name, :description, :address, :capacity, :image)
+      params.require(:center).permit(:name, :description, :address, :capacity)
     end
 
     private

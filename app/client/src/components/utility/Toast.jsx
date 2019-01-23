@@ -4,12 +4,18 @@ import {toast} from 'bulma-toast';
 const Toast = ({message, type}) => (
   <React.Fragment>
     {
-      toast({
-        message,
-        type,
-        dismissible: true,
-        position: 'top-right'
-      })
+      message ? (
+        <React.Fragment>
+          {
+            toast({
+              message,
+              type,
+              dismissible: true,
+              position: 'top-right'
+            })
+          }
+        </React.Fragment>
+      ) : (<React.Fragment />)
     }
   </React.Fragment>
 );

@@ -56,6 +56,7 @@ export function login(user) {
         setHeaders(response.jwt);
         const decodedToken = decode(response.jwt);
         localStorage.setItem('userId', decodedToken.sub);
+        localStorage.setItem('token', response.jwt);
         dispatch(loginSuccess(decodedToken.sub));
         dispatch(clearAuthMessage());
       })

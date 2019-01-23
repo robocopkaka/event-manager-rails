@@ -37,7 +37,7 @@ class Centers extends React.Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-    centers: state.centers
+    centers: state.centers.centers
   };
 }
 
