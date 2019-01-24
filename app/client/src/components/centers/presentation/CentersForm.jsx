@@ -77,7 +77,12 @@ const CentersForm = ({
       </div>
       <div className="file">
         <label className="file-label">
-          <input className="file-input" type="file" name="resume" onChange={handleImageUpload} />
+          <input className="file-input"
+                 type="file"
+                 name="resume"
+                 onChange={handleImageUpload}
+                 accept=".jpg,.png,.jpeg"
+          />
           <span className="file-cta">
             <span className="file-icon">
               <i className="fa fa-upload" />

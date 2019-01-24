@@ -41,12 +41,6 @@ class AddCenter extends Component {
     this.setState({
       image: e.target.files[0]
     });
-    const image = new FormData();
-    image.append('image', e.target.files[0], e.target.files[0].name);
-    for (var key of image.entries()) {
-      console.log(key[1])
-    }
-    // this.props.actions.uploadImage(formData);
   }
 
   validForm() {
@@ -72,7 +66,6 @@ class AddCenter extends Component {
         })
         .catch(() => {});
     }
-    // console.log('stuff');
   }
 
   render() {
