@@ -1,5 +1,12 @@
 export default {
-  centers: [],
+  centers: {
+    centers: [],
+    center: {},
+    message: '',
+    errorMessage: '',
+    isLoading: false,
+    toastType: ''
+  },
   auth: {
     authenticated: false,
     userId: '',

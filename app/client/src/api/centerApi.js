@@ -2,7 +2,6 @@ import axios from 'axios';
 
 class CenterApi {
   static getCenters() {
-    // console.log("gets here")
     return axios.get('/api/v1/centers',{
       headers: {
         'Content-Type': 'application/json',
@@ -10,6 +9,18 @@ class CenterApi {
     })
       .then((response) => response)
       .catch(error => error);
+  }
+
+  static addCenter(center) {
+    return axios.post('/api/v1/centers', center, {
+      headers: {
+        Authorization: `${localStorage.token}`
+      }
+    })
+      .then(response => response)
+      .catch(error => {
+        throw error;
+      });
   }
 }
 
