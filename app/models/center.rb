@@ -5,4 +5,5 @@ class Center < ApplicationRecord
   validates :image, blob: {
     content_type: %w[image/png image/jpg image/jpeg]
   }
+  scope :order_by_id, -> { order(id: :asc) }
 end
