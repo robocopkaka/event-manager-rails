@@ -3,7 +3,7 @@ module Api::V1
   class CentersController < ApplicationController
     # before_action :authenticate_user, only: %i[create update]
     before_action :is_admin?, only: %i[create update]
-    before_action :find_center, only: %i[update]
+    before_action :find_center, only: %i[update show]
 
     def create
       @center = Center.create!(center_params)
@@ -12,6 +12,10 @@ module Api::V1
 
     def update
       @center.update!(center_params)
+    end
+
+    def show
+      json_response(@center, 'center', 'Center retrieved successfully')
     end
 
     def index
@@ -34,7 +38,7 @@ module Api::V1
     end
 
     def find_center
-      @center = Center.find_by(id: params[:id])
+      @center = Center.find_by!(id: params[:id])
     end
   end
 end
