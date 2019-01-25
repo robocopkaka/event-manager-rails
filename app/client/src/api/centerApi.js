@@ -22,6 +22,18 @@ class CenterApi {
         throw error;
       });
   }
+
+  static fetchOne(id) {
+    return axios.get(`/api/v1/centers/${id}`, {
+      headers: {
+        'Content-type': 'application/json'
+      }
+    })
+      .then(response => response)
+      .catch(error => {
+        throw error;
+      });
+  }
 }
 
 export default CenterApi;

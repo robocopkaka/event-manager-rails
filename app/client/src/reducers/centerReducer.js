@@ -36,6 +36,24 @@ export default function centerReducer(state=initialState.centers, action) {
         toastType: { $set: '' },
       });
       return newState;
+    case types.FETCH_SINGLE_CENTER_SUCCESS:
+      newState = update(state, {
+        center: { $set: action.center },
+        isLoading: { $set: false }
+      });
+      return newState;
+    case types.FETCH_SINGLE_CENTER_FAILURE:
+      newState = update(state, {
+        message: { $set: action.error.message },
+        toastType: { $set: 'is-danger' },
+        isLoading: { $set: false }
+      });
+      return newState;
+    case types.FETCH_SINGLE_CENTER_LOADING:
+      newState = update(state, {
+        isLoading: { $set: true }
+      });
+      return newState;
     default:
       return state;
   }
