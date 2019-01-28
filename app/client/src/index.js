@@ -7,10 +7,10 @@ import configureStore from './store/configureStore';
 import App from './App';
 import history from './history';
 import * as serviceWorker from './serviceWorker';
-import {fetchCenters} from "./actions/centerActions";
+// import {fetchCenters} from "./actions/centerActions";
 
 const store = configureStore();
-store.dispatch(fetchCenters());
+// store.dispatch(fetchCenters());
 
 ReactDOM.render(
   <Provider store={store}>

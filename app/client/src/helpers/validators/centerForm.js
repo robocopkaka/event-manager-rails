@@ -1,6 +1,14 @@
 import validator from 'validator';
 
+function resetStates(state) {
+  for (const key in state.fieldsValidity) {
+    state.fieldsValidity[key] = true;
+  }
+  state.valid = true;
+}
+
 export default function centerFormValidator(state) {
+  resetStates(state);
   if(validator.isEmpty(state.name)) {
     state.fieldsValidity.name = false;
     state.errorMessages.name = 'Name is missing';
@@ -30,5 +38,5 @@ export default function centerFormValidator(state) {
     fieldsValidity: state.fieldsValidity,
     errorMessages: state.errorMessages,
     valid: state.valid
-  }
+  };
 }

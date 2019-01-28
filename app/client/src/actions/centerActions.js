@@ -4,7 +4,7 @@ import {
   ADD_CENTER_LOADING,
   ADD_CENTER_SUCCESS,
   CLEAR_CENTER_ACTION_MESSAGE,
-  FETCH_SINGLE_CENTER_SUCCESS
+  FETCH_SINGLE_CENTER_SUCCESS, UPDATE_CENTER_FAILURE, UPDATE_CENTER_LOADING, UPDATE_CENTER_SUCCESS
 } from './actionTypes';
 
 export function fetchCentersSuccess(centers) {
@@ -19,6 +19,16 @@ export function addCenterFailure(error) {
 }
 export function addCenterLoading() {
   return { type: ADD_CENTER_LOADING };
+}
+
+export function updateCenterSuccess(center) {
+  return { type: UPDATE_CENTER_SUCCESS, center };
+}
+export function updateCenterFailure(error) {
+  return { type: UPDATE_CENTER_FAILURE, error };
+}
+export function updateCenterLoading() {
+  return { type: UPDATE_CENTER_LOADING };
 }
 
 export function clearCenterActionMessage() {
@@ -54,7 +64,7 @@ export function addCenter(center) {
     dispatch(addCenterLoading());
     return CenterApi.addCenter(center)
       .then((response) => {
-        dispatch(addCenterSuccess(response.data.center));
+        dispatch(addCenterSuccess(response.data.data.center));
         dispatch(clearCenterActionMessage());
       })
       .catch((error) => {
@@ -70,10 +80,27 @@ export function fetchSingleCenter(id) {
     dispatch(fetchSingleCenterLoading());
     return CenterApi.fetchOne(id)
       .then((response) => {
-        dispatch(fetchSingleCenterSuccess(response.data.center));
+        dispatch(fetchSingleCenterSuccess(response.data.data.center));
       })
       .catch((error) => {
+        console.log(error.response)
         dispatch(fetchSingleCenterFailure(error.response.data));
+        throw error.response.data;
+      });
+  };
+}
+
+export function updateCenter(id, center) {
+  return (dispatch) => {
+    dispatch(updateCenterLoading());
+    return CenterApi.updateCenter(id, center)
+      .then((response) => {
+        dispatch(updateCenterSuccess(response.data.data.center));
+        dispatch(clearCenterActionMessage());
+      })
+      .catch((error) => {
+        dispatch(updateCenterFailure(error.response.data));
+        dispatch(clearCenterActionMessage());
         throw error.response.data;
       });
   };

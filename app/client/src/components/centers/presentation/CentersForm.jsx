@@ -3,7 +3,7 @@ import classNames from 'classnames';
 
 const CentersForm = ({
   name, address, capacity, description, handleChange, submit,
-  errorMessages, fieldsValidity, handleImageUpload
+  errorMessages, fieldsValidity, handleImageUpload, image
 }) => {
   const nameClasses = classNames('input', { 'is-danger': !fieldsValidity.name });
   const nameErrorMessage = classNames('help is-danger', { 'display-none': fieldsValidity.name });
@@ -91,6 +91,11 @@ const CentersForm = ({
               Choose a file…
             </span>
           </span>
+          {image ? (
+            <span className="file-name">
+            {image.name ? image.name : image}
+          </span>
+          ) : ''}
         </label>
       </div>
       <div className="field">
