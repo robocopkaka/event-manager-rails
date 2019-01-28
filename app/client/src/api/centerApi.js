@@ -34,6 +34,18 @@ class CenterApi {
         throw error;
       });
   }
+
+  static updateCenter(id, center) {
+    return axios.put(`/api/v1/centers/${id}`, center, {
+      headers: {
+        Authorization: `Bearer ${localStorage.token}`
+      }
+    })
+      .then(response => response)
+      .catch(error => {
+        throw error;
+      });
+  }
 }
 
 export default CenterApi;

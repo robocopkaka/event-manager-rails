@@ -8,6 +8,9 @@ module Error
         rescue_from ActiveRecord::RecordNotFound do |e|
           respond(:not_found, 404, e.to_s )
         end
+        rescue_from ActiveSupport::MessageVerifier::InvalidSignature do |e|
+          respond(:unprocessable_entity, 422, 'Invalid image file')
+        end
       end
     end
 

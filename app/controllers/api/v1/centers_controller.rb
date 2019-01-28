@@ -12,6 +12,7 @@ module Api::V1
 
     def update
       @center.update!(center_params)
+      json_response(@center, 'center', 'Center was successfully updated', :ok)
     end
 
     def show
