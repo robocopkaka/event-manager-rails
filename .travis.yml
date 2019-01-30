@@ -1,0 +1,23 @@
+language: ruby
+rbenv:
+- 2.4.1
+before_script:
+- bundle exec rails db:create --all
+- bundle exec rails db:migrate
+script:
+- bundle exec rake ci:tests
+services:
+- postgresql
+notifications:
+  email: false
+deploy:
+  provider: heroku
+  api_key:
+    secure: 7/VKukLl0E3n7hUgujnkErPJXuPdHvTDUOCUVy0Ch2/Mtr+4xpunnocYC7Yfxh+zl8/mR7fBjhg2JiJXdEiR7IyyHR4LGaIViC00uPCh8cy0vNc5w7+OD01jpxorBidV/LE2+4Pb6puEtDKFtWu0i46PVPab4pPSGfBt5jqXGArh58h0qP4wmV5MiKodHCMPmM6GmvcCG4O4v+af+qTcwwvDhC4rnpEsh0CEGMzFK4CVe6Wo7niTkqNxGnGuo3K94IAFLbk8e6PPIq/QO41b5591DGVKrkEoVVHsIaIy4gn5qG8vBx/bd5h63In+pzKa2CHxe+Cebhh/p6nuOwA2D4zR0btSbixyJu5jscvxp30N73r8BrMgYb636v8XFYu/4cD5BeBzX9n7nyBoaCv/P9swTByxWTKj2HtDHLnESdzAStaIKFoddtR/Xxrl14BljKwFL2fNqy56Zpn13S/ud8IDGInEUYsId7EAawq3sU69U6DnW5sr2AvAaJ83ZFlgO6FVhKV0q1ihC2JsrCHzhxZDLIYuB4BTGMpGBhIDxGwQvEvHamxZB2sK3n9ITpDVGpHw/AHaiOu+T5f5emaTC5eN4BGDvpT0VlDxFzG99J1AtOv4E/Q8eaYGYgvTyxAL4MaVDlnecdWV1zEZur9qe15VWiyM2+r1S3E/s77l9g8=
+  app:
+    master: https://shielded-citadel-82961.herokuapp.com/
+  on:
+    repo: https://github.com/robocopkaka/event-manager-rails.git
+  run:
+    - "rails db:migrate"
+
