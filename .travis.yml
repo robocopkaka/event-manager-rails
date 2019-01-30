@@ -19,5 +19,6 @@ deploy:
   on:
     repo: https://github.com/robocopkaka/event-manager-rails.git
   run:
-    - "rails db:migrate"
-
+  - rails db:migrate
+env:
+  secure: 4GcF+9SrG+mwkd0jN0ftd7NuYvF0tb61Va7aqnE8Mmy2s8PAZIYLk2vl2Cl9amLi5KhyaUeFPA9R3aKXm67D4STsbhX9EH8Ch629TOXcI9gVEYoXN9AyUvolqegtDvT1abunms0SOCxlwG81OkqP6O0XQ7QWo7gTIJJKMXGC+ewz5JOoIruF4y1rEWHCqVTzdJ6ioxDvuib26tP7QOjDbcnXhdjem2lxLDcysN+JPTHQnbinQx6u6XZQbDz+PoB0cr+AmC50/zMT2XCUEVLhYlGSq/9oLqzam458Xq9MvGsB5/pa5ST9B/8z948xO0OE0uPQEOcY/FUwqb6ZbJpBKUTtEOcpI6JaGCdDfiza2T9DgsbU2Wx/4+TIZnqQsJ+NwkYjNcelt0q7SEtNDpUArtnGJ+BAcuL9B3UJk5IuNORGnGaiGX0yE0hAO+8Sq77at9IramOIwkjgJ8MWk32GCTKjEb27BqKHo+pDWX4ruFnQyNzGrkzYCR7rMJ/PotEHppQdTmUloztkCdsjkEZKOvFMHOWCqd+AqljqBywkLnfHwd5s1OUTMKRiomdeeXS7epgmZQ1Q6plyO745Xi4Gp8ntPfYM8ZMZfgmwIk8ZRYZAlV1uhfhZRjaQa5LD4lsVxlPi4JQ3LSIA8HrwPiRSDimPvxLnqaiXenlyesHWF4k=
