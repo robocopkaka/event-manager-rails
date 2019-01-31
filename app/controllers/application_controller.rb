@@ -4,6 +4,7 @@ class ApplicationController < ActionController::API
   include Error::ErrorHandler
 
   def fallback_index_html
-    render :file => 'public/index.html'
+    render :file => 'public/index.html', :layout => false
+    puts "stuff was rendered"
   end
 end
