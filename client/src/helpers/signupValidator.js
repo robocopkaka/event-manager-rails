@@ -34,7 +34,8 @@ export default function validateForm(state) {
     newState.formValidity.password = false;
     newState.formValid = false;
   }
-  if(validator.isLength(newState.password, [{min: 6, max: null}])) {
+  if(!validator.isLength(newState.password, [{ min: 6, max: undefined }])) {
+    console.log(newState.password.length)
     newState.errorMessages.password = 'Password should have at least 6 characters';
     newState.formValidity.password = false;
     newState.formValid = false;

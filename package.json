@@ -2,11 +2,12 @@
   "name": "react-and-rails",
   "engines": {
     "node": "11.4.0",
+    "npm": "6.4.1",
     "yarn": "1.10.1"
   },
   "scripts": {
-    "build": "yarn --cwd app/client install && yarn --cwd app/client build",
-    "deploy": "cp -a app/client/build/. public/",
+    "build": "yarn --cwd client install && yarn --cwd client build",
+    "deploy": "cp -a client/build/. public/",
     "heroku-postbuild": "yarn build && yarn deploy && echo 'Client built!'"
   }
 }
