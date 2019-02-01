@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_23_095500) do
+ActiveRecord::Schema.define(version: 2019_02_01_105135) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -46,6 +46,19 @@ ActiveRecord::Schema.define(version: 2019_01_23_095500) do
     t.string "image", default: ""
   end
 
+  create_table "events", force: :cascade do |t|
+    t.string "name", null: false
+    t.integer "guests", default: 0, null: false
+    t.datetime "datetime", null: false
+    t.text "description", default: ""
+    t.bigint "center_id"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["center_id"], name: "index_events_on_center_id"
+    t.index ["user_id"], name: "index_events_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "name"
     t.string "email"
@@ -56,4 +69,6 @@ ActiveRecord::Schema.define(version: 2019_01_23_095500) do
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "events", "centers"
+  add_foreign_key "events", "users"
 end
