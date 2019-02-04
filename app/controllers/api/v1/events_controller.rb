@@ -4,6 +4,7 @@ module Api::V1
     before_action :find_center, only: %i[create update]
 
     def create
+      # binding.pry
       @event = @center.events.create!(event_params)
       json_response(@event, 'event', 'Event was created successfully', :created)
     end
@@ -11,7 +12,9 @@ module Api::V1
     private
 
     def event_params
-      params.require(:event).permit(:name, :guests, :image, :description, :datetime)
+      params.require(:event).permit(
+        :name, :guests, :image, :description, :start_time, :end_time
+      )
     end
 
     def find_center
