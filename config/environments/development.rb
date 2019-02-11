@@ -54,5 +54,5 @@ Rails.application.configure do
   # commented out this line because it was throwing a lot
   # of warnings in the console about watching directories
   # multiple times
-  # config.file_watcher = ActiveSupport::EventedFileUpdateChecker
+  # config.file_watcher = ActiveSupport::FileUpdateChecker
 end
