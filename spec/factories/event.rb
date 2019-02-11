@@ -3,7 +3,7 @@
 # Center and User factories should have after_create hooks to create events
 FactoryBot.define do
   factory :event do
-    name { Faker::Name.first_name }
+    name { "#{Faker::Name.first_name} #{Faker::Lorem.unique.word}" }
     guests { Faker::Number.number(4) }
     description { Faker::Lorem.paragraph(3) }
     start_time { DateTime.now + 1.hour }

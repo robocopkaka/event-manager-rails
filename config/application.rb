@@ -32,6 +32,7 @@ module EventManager
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
     config.autoload_paths += %W(#{config.root}/lib)
+    config.autoload_paths += %W(#{config.root}/lib/validators)
     config.exceptions_app = routes
   end
 end

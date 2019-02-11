@@ -78,7 +78,8 @@ RSpec.describe 'Events API' do
       end
 
       it 'should contain an error message' do
-        expect(json['message']).to match 'Start time overlaps with existing time'
+        message = 'Start time or end time overlaps with existing time'
+        expect(json['message']).to match message
       end
     end
 

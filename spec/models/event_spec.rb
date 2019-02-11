@@ -1,6 +1,6 @@
 require 'rails_helper'
-include CurrentUser
 RSpec.describe Event, type: :model do
+  include CurrentUser
   let!(:new_user) { create :user }
   let!(:center) { create :center }
   # let!(:events) { FactoryBot.create_list(:event, 10) }
