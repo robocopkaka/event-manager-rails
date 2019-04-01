@@ -14,5 +14,10 @@ export default {
     toastType: '',
     errorMessage: '',
     isLoading: false
+  },
+  active: {
+    centers: false,
+    events: false,
+    home: false
   }
 };

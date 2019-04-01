@@ -1,0 +1,36 @@
+$navbar-background-color: #4A2545;
+@import "../../../node_modules/bulma";
+
+#main-header {
+  nav {
+    padding: 0 20px;
+    background-color: $navbar-background-color;
+    .navbar-menu {
+      .navbar-start {
+        .navbar-item {
+          &:hover {
+            background-color: #FCF7FF;
+            color: #4A2545;
+          }
+          .navbar-link {
+            background-color: $navbar-background-color;
+            color: #FCF7FF;
+            &:hover {
+              background-color: #FCF7FF;
+              color: #4A2545;
+            }
+          }
+          .active-item {
+            background-color: #FCF7FF;
+            color: #4A2545;
+          }
+        }
+      }
+      .navbar-end {
+        .is-primary {
+          background-color: #A288A6;
+        }
+      }
+    }
+  }
+}
