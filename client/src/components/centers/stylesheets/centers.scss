@@ -1,56 +1,59 @@
 @import "~bulma";
 @import "~bulma-extensions/bulma-divider/dist/css/bulma-divider";
-#center-column {
-  //height: 500px;
-  #center-card {
-    //height: 480px;
-    //border-radius: 10px;
-    border-radius: 0 0 10px 10px;
-    .center-name {
-      text-align: center;
-      font-size: 25px;
-      font-weight: bold;
-      padding-bottom: 10px;
-    }
-    .card-content {
-      height: 200px;
-      .center-address {
-        padding-bottom: 20px;
-        font-size: 15px;
-        font-weight: 600;
-        line-height: 1rem;
-      }
-      .center-description {
-        font-style: italic;
-        font-weight: 300;
-      }
-      .content {
-        margin: 0 -5px 0 -5px;
-      }
-    }
-    .card-footer {
+#centers-page {
+  padding-top: 30px;
+  #center-column {
+    //height: 500px;
+    #center-card {
+      //height: 480px;
+      //border-radius: 10px;
       border-radius: 0 0 10px 10px;
-      color: white;
-      height: 70px;
-      display: flex;
-      flex-direction: row;
-      //top: 0;
-      //right: 0;
-      //left: 0;
-      //right: 0pc;
-      background: #4A2545;
-      #center-capacity {
+      .center-name {
         text-align: center;
-        width: 50%;
-        padding: 10px 0 10px 20px;
-        #capacity-heading {
-          font-weight: bold;
+        font-size: 25px;
+        font-weight: bold;
+        padding-bottom: 10px;
+      }
+      .card-content {
+        height: 200px;
+        .center-address {
+          padding-bottom: 20px;
+          font-size: 15px;
+          font-weight: 600;
+          line-height: 1rem;
+        }
+        .center-description {
+          font-style: italic;
+          font-weight: 300;
+        }
+        .content {
+          margin: 0 -5px 0 -5px;
         }
       }
-      #center-others {
-        text-align: center;
-        width: 50%;
-        padding: 10px 20px 10px 0;
+      .card-footer {
+        border-radius: 0 0 10px 10px;
+        color: white;
+        height: 70px;
+        display: flex;
+        flex-direction: row;
+        //top: 0;
+        //right: 0;
+        //left: 0;
+        //right: 0pc;
+        background: #4A2545;
+        #center-capacity {
+          text-align: center;
+          width: 50%;
+          padding: 10px 0 10px 20px;
+          #capacity-heading {
+            font-weight: bold;
+          }
+        }
+        #center-others {
+          text-align: center;
+          width: 50%;
+          padding: 10px 20px 10px 0;
+        }
       }
     }
   }
