@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import event from '../../../images/Events-1200x630.jpg';
 import '../stylesheets/centers.scss';
 

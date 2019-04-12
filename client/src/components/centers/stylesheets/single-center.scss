@@ -1,0 +1,39 @@
+.center-page {
+  #center-details {
+    height: 20rem;
+    #center-page-right {
+      padding: 30px 20px;
+
+      #center-name {
+        font-weight: bold;
+        font-size: 40px;
+      }
+
+      #center-address {
+        font-weight: 300;
+        font-size: 20px;
+        line-height: 1.5rem;
+        padding-bottom: 20px;
+      }
+
+      #description-heading {
+        font-weight: bold;
+        #center-description {
+          font-weight: 100;
+          line-height: 2rem;
+        }
+      }
+    }
+  }
+
+  .center-events {
+    padding-bottom: 100px;
+
+    #center-events-heading {
+      padding: 20px 0;
+      text-align: center;
+      font-size: 40px;
+      font-weight: bold;
+    }
+  }
+}
