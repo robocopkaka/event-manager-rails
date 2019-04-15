@@ -100,9 +100,8 @@ RSpec.describe 'Events API' do
   describe "#index" do
     context "when no upcoming flag is set in the query" do
       let!(:events) { create_list :event, 5, center: center }
-      before do
-        get "/api/v1/centers/#{center_id}/events"
-      end
+      before { get api_v1_center_events_path(center_id) }
+
       it "returns all the events" do
         returned_events = json["data"]["events"]
         expect(response).to have_http_status(200)
@@ -117,7 +116,7 @@ RSpec.describe 'Events API' do
         create_list :event, 5, center: center
         travel_back
         create_list :event, 5, center: center
-        get "/api/v1/centers/#{center_id}/events", params: { filter: "upcoming" }
+        get api_v1_center_events_path(center_id), params: { filter: "upcoming" }
       end
       it "returns only future events" do
         returned_events = json["data"]["events"]
@@ -128,7 +127,7 @@ RSpec.describe 'Events API' do
 
     context "when the center has no events" do
       let!(:new_center) { create :center }
-      before { get "/api/v1/centers/#{new_center.id}/events" }
+      before { get api_v1_center_events_path(new_center.id) }
 
       it "should return an empty array" do
         expect(response).to have_http_status(200)
@@ -141,7 +140,8 @@ RSpec.describe 'Events API' do
     let!(:event) { create :event, center: center }
     let(:event_id) { event.id }
     context "when a valid ID is passed" do
-      before { get "/api/v1/centers/#{center_id}/events/#{event_id}" }
+      before { get api_v1_center_event_path(center_id: center_id, id: event_id) }
+
       it "returns the actual event" do
         returned_event = json["data"]["event"]
         expect(response).to have_http_status(200)
@@ -151,7 +151,7 @@ RSpec.describe 'Events API' do
     end
 
     context "when an invalid event ID is passed" do
-      before { get "/api/v1/centers/#{center_id}/events/1000" }
+      before { get api_v1_center_event_path(center_id: center_id, id: 1000) }
 
       it "should return an error" do
         expect(response).to have_http_status(404)
@@ -161,7 +161,7 @@ RSpec.describe 'Events API' do
 
     context "when the event isn't in a particular center" do
       let!(:new_center) { create :center }
-      before { get "/api/v1/centers/#{new_center.id}/events/#{event_id}" }
+      before { get api_v1_center_event_path(center_id: new_center.id, id: event_id) }
 
       it "should return an error" do
         expect(response).to have_http_status(404)
