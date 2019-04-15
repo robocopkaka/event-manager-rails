@@ -29,16 +29,6 @@ RSpec.describe 'Events API' do
         expect(json['data']['event']['name']).to match params[:event][:name]
         expect(json['data']['event']['guests']).to match params[:event][:guests].to_i
       end
-
-      it 'should have a center object inside the event object' do
-        expect(json['data']['event']['center']).to_not be_empty
-        expect(json['data']['event']['center']['name']).to match center.name
-        end
-
-      it 'should have a user object inside the event object' do
-        expect(json['data']['event']['user']).to_not be_empty
-        expect(json['data']['event']['user']['name']).to match new_user.name
-      end
     end
 
     context 'when posting to an invalid center_id' do
@@ -66,14 +56,12 @@ RSpec.describe 'Events API' do
         }
       end
       before do
-        # binding.pry
         post "/api/v1/centers/#{center_id}/events",
              params: params,
              headers: authenticated_headers(user_id)
       end
 
       it 'should contain a 422' do
-        # binding.pry
         expect(response).to have_http_status(422)
       end
 
@@ -105,6 +93,79 @@ RSpec.describe 'Events API' do
 
       it 'should have an error message' do
         expect(json['message']).to match 'Start time is in the past'
+      end
+    end
+  end
+
+  describe "#index" do
+    context "when no upcoming flag is set in the query" do
+      let!(:events) { create_list :event, 5, center: center }
+      before do
+        get "/api/v1/centers/#{center_id}/events"
+      end
+      it "returns all the events" do
+        returned_events = json["data"]["events"]
+        expect(response).to have_http_status(200)
+        expect(returned_events.count).to eq 5
+        expect(returned_events.first["name"]).to eq Event.first.name
+      end
+    end
+
+    context "when an upcoming flag is set" do
+      before do
+        travel_to Time.local(2018)
+        create_list :event, 5, center: center
+        travel_back
+        create_list :event, 5, center: center
+        get "/api/v1/centers/#{center_id}/events", params: { filter: "upcoming" }
+      end
+      it "returns only future events" do
+        returned_events = json["data"]["events"]
+        expect(response).to have_http_status(200)
+        expect(returned_events.count).to eq 5
+      end
+    end
+
+    context "when the center has no events" do
+      let!(:new_center) { create :center }
+      before { get "/api/v1/centers/#{new_center.id}/events" }
+
+      it "should return an empty array" do
+        expect(response).to have_http_status(200)
+        expect(json["data"]["events"].count).to eq 0
+      end
+    end
+  end
+
+  describe "#show" do
+    let!(:event) { create :event, center: center }
+    let(:event_id) { event.id }
+    context "when a valid ID is passed" do
+      before { get "/api/v1/centers/#{center_id}/events/#{event_id}" }
+      it "returns the actual event" do
+        returned_event = json["data"]["event"]
+        expect(response).to have_http_status(200)
+        expect(returned_event["name"]).to eq Event.last.name
+        expect(returned_event["guests"]).to eq Event.last.guests
+      end
+    end
+
+    context "when an invalid event ID is passed" do
+      before { get "/api/v1/centers/#{center_id}/events/1000" }
+
+      it "should return an error" do
+        expect(response).to have_http_status(404)
+        expect(json["message"]).to match "Couldn't find Event"
+      end
+    end
+
+    context "when the event isn't in a particular center" do
+      let!(:new_center) { create :center }
+      before { get "/api/v1/centers/#{new_center.id}/events/#{event_id}" }
+
+      it "should return an error" do
+        expect(response).to have_http_status(404)
+        expect(json["message"]).to match "Couldn't find Event"
       end
     end
   end

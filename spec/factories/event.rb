@@ -6,16 +6,14 @@ FactoryBot.define do
     name { "#{Faker::Name.first_name} #{Faker::Lorem.unique.word}" }
     guests { Faker::Number.number(4) }
     description { Faker::Lorem.paragraph(3) }
-    start_time { DateTime.now + 1.hour }
-    end_time { DateTime.now + 3.hours }
+    # to avoid overlapping times use n^2 for start times
+    sequence :start_time do |n|
+      DateTime.now + (n*2).hours
+    end
+    sequence :end_time do
+      start_time + 1.hour
+    end
     center_id { create(:center).id }
     user_id { create(:user).id }
-
-    before(:create) do |event|
-      unless Event.last.nil?
-        event.start_time = Event.last.end_time + 1.hour
-        event.end_time = event.start_time + 3.hours
-      end
-    end
   end
 end
