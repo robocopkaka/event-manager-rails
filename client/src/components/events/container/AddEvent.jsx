@@ -1,8 +1,11 @@
 import React, { Component, Fragment } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import moment from 'moment';
 import EventsForm from '../presentation/EventsForm';
-import "../stylesheets/events-form.scss";
+import '../stylesheets/events-form.scss';
 import eventValidator from '../../../helpers/validators/eventForm';
-import centerFormValidator from "../../../helpers/validators/centerForm";
+import * as eventActions from '../../../actions/eventActions';
 
 class AddEvent extends Component {
   constructor(props) {
@@ -68,8 +71,18 @@ class AddEvent extends Component {
     } = this.state;
     this.setState(eventValidator);
 
-    if (!this.validForm()) {
-      console.log([this.state.fieldsValidity, this.state.errorMessages]);
+    if (this.validForm()) {
+      const newDate = moment(date).format('YYYY-MM-DD');
+      const start = moment(`${newDate.toString()} ${startTime.toString()}`, 'YYYY-MM-DDLT').format('YYYY-MM-DDTHH:mm:ss');
+      const end = moment(`${newDate.toString()} ${endTime.toString()}`, 'YYYY-MM-DDLT').format('YYYY-MM-DDTHH:mm:ss');
+      const event = new FormData();
+      event.append('event[name]', name);
+      event.append('event[description]', description);
+      event.append('event[guests]', guests);
+      event.append('event[start_time]', start);
+      event.append('event[end_time]', end);
+
+      this.props.actions.addEvent(event);
     }
   }
 
@@ -99,4 +112,10 @@ class AddEvent extends Component {
   }
 }
 
-export default AddEvent;
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(eventActions, dispatch)
+  };
+}
+
+export default connect(null, mapDispatchToProps)(AddEvent);
