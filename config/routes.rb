@@ -3,12 +3,17 @@ Rails.application.routes.draw do
   post 'centers/create'
   get 'centers', to: 'centers#index'
 
+  concern :eventable do
+    resources :events, shallow: true
+  end
+
   namespace :api do
     namespace :v1 do
-      resources :centers do
-        resources :events
+      resources :centers, concerns: :eventable
+      resources :events, only: :index
+      resources :users do
+        resources :events, only: :index
       end
-      resources :users
       post 'user_token' => 'user_token#create'
     end
   end

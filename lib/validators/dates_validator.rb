@@ -10,7 +10,7 @@ class DatesValidator < ActiveModel::Validator
     elsif end_time < start_time
       record[:end_time] << 'is older than the start time'
     else
-      times = Center.find_by(id: record.center_id).events.pluck(:start_time, :end_time)
+      times = Center.find_by(id: record.center_id).all_events.pluck(:start_time, :end_time)
       time_group = { start_time: start_time, end_time: end_time }
       if DatesValidator.time_overlaps?(times, time_group) # uses time_overlaps? method in DateTimeHelpers module
         record.errors[:start_time] << 'or end time overlaps with existing time'
