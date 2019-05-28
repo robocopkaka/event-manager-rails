@@ -6,15 +6,8 @@ class EventService
       elsif params[:user_id].present?
         User.find_by(id: params[:user_id]).upcoming_events(params[:filter])
       else
-        handle_extra(params)
+        Event.all
       end
-    end
-
-    def handle_extra(params)
-      #  handle a case where someone is passing in a wrong key/value pair
-      return [] unless params.keys.count.zero?
-
-      Event.all
     end
   end
 end

@@ -125,15 +125,15 @@ RSpec.describe 'Events API' do
         end
       end
 
-      # context "when the center has no events" do
-      #   let!(:new_center) { create :center }
-      #   before { get api_v1_center_events_path(new_center.id) }
-      #
-      #   it "should return an empty array" do
-      #     expect(response).to have_http_status(200)
-      #     expect(json["data"]["events"].count).to eq 0
-      #   end
-      # end
+      context "when the center has no events" do
+        let!(:new_center) { create :center }
+        before { get api_v1_center_events_path(new_center.id) }
+
+        it "should return an empty array" do
+          expect(response).to have_http_status(200)
+          expect(json["data"]["events"].count).to eq 0
+        end
+      end
     end
 
     describe "when user is in params" do
@@ -195,7 +195,7 @@ RSpec.describe 'Events API' do
 
       it "should return an error" do
         expect(response).to have_http_status(404)
-        expect(json["message"]).to match "Couldn't find Event"
+        expect(json["message"]).to match "Resource was not found"
       end
     end
   end

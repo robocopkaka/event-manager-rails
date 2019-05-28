@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_02_080408) do
+ActiveRecord::Schema.define(version: 2019_05_28_122042) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -44,6 +44,8 @@ ActiveRecord::Schema.define(version: 2019_02_02_080408) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "image", default: ""
+    t.bigint "user_id"
+    t.index ["user_id"], name: "index_centers_on_user_id"
   end
 
   create_table "events", force: :cascade do |t|
@@ -70,6 +72,7 @@ ActiveRecord::Schema.define(version: 2019_02_02_080408) do
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "centers", "users"
   add_foreign_key "events", "centers"
   add_foreign_key "events", "users"
 end

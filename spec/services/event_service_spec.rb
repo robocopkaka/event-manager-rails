@@ -44,11 +44,11 @@ RSpec.describe EventService do
   end
 
   describe "when an invalid value is passed in the params" do
-    it "raises an error" do
-      event = ActionController::Parameters.new("echo": "echo")
-      events = EventService.fetch_events(event)
+    it "returns all the events" do
+      params = ActionController::Parameters.new("echo": "echo")
+      events = EventService.fetch_events(params)
 
-      expect(events).to eq []
+      expect(events).to eq user_events + center_events
     end
   end
 end

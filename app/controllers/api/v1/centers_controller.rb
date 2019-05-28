@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 module Api::V1
   class CentersController < ApplicationController
-    # before_action :authenticate_user, only: %i[create update]
+    before_action :authenticate_user, only: %i[create update]
     before_action :is_admin?, only: %i[create update]
     before_action :find_center, only: %i[update show]
 
     def create
-      @center = Center.create!(center_params)
+      @center = current_user.centers.create!(center_params)
       json_response(@center, 'center', 'Center was successfully created', :created)
     end
 
@@ -20,9 +20,7 @@ module Api::V1
     end
 
     def index
-      # .with_attached_image is a scope provided by ActiveStorage that helps reduce
-      # N + 1 queries when fetching images
-      @centers = Center.order_by_id.with_attached_image
+      @centers = CenterService.fetch_centers(params)
       json_response(@centers, 'centers', 'List of centers', :ok)
     end
 
@@ -43,4 +41,3 @@ module Api::V1
     end
   end
 end
-# Center controller
