@@ -52,4 +52,30 @@ RSpec.describe 'Users API' do
       end
     end
   end
+
+  describe "login" do
+    let!(:user) { create :user }
+    let(:params) { { auth: { email: user.email, password: user.password }  } }
+
+    context "when valid params are passed" do
+      before do
+        post api_v1_login_path, params: params
+      end
+      it "should return a token" do
+        expect(response).to have_http_status 201
+        expect(json).to have_key("jwt")
+      end
+    end
+
+    context "when invalid params are passed in" do
+      before do
+        params[:auth][:password] = "stuff"
+        post api_v1_login_path, params: params
+      end
+      it "should return an error" do
+        expect(response).to have_http_status 404
+        expect(json["message"]).to match "Resource was not found"
+      end
+    end
+  end
 end

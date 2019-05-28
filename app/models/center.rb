@@ -1,4 +1,5 @@
 class Center < ApplicationRecord
+  belongs_to :user
   validates_presence_of :name, :description, :address, :capacity
   validates_uniqueness_of :name, scope: :address, case_sensitive: false, message: "has been taken in the location specified"
   has_one_attached :image
@@ -12,7 +13,8 @@ class Center < ApplicationRecord
     events.order(created_at: :asc)
   end
 
-  def upcoming_events(filter)
+  def upcoming_events(filter=nil)
+    # binding.pry
     return all_events if filter.nil?
 
     events.where('start_time > ?', Time.now).order(created_at: :asc)
