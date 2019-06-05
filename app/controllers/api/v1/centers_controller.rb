@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 module Api::V1
   class CentersController < ApplicationController
+    include Api::V1::Concerns::Docs::CentersController
+
     before_action :authenticate_user, only: %i[create update]
     before_action :is_admin?, only: %i[create update]
     before_action :find_center, only: %i[update show]

@@ -13,6 +13,8 @@ Rails.application.routes.draw do
         resources :centers, only: %i[index]
       end
       post 'login' => 'user_token#create'
+      get '/apidocs' => redirect('/swagger-ui/dist/index.html?url=http://localhost:3001/api/v1/docs')
+      resources :docs, only: [:index]
     end
   end
 
