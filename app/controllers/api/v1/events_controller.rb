@@ -1,5 +1,6 @@
 module Api::V1
   class EventsController < ApplicationController
+    include Api::V1::Concerns::Docs::EventsController
     before_action :authenticate_user, only: %i[create update]
     before_action :find_center, only: %i[create]
     before_action :find_event, only: %i[show update destroy]

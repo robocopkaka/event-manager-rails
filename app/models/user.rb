@@ -1,4 +1,5 @@
 class User < ApplicationRecord
+  include Concerns::Docs::User
   include EmailValidation
   has_secure_password
   has_many :events

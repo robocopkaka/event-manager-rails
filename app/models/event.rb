@@ -1,5 +1,6 @@
 class Event < ApplicationRecord
   include ActiveModel::Validations
+  include Concerns::Docs::Event
   belongs_to :center
   belongs_to :user
 
