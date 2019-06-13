@@ -106,7 +106,7 @@ module Api::V1
           end
 
           operation :get do
-            key :summary, "Fetches a center"
+            key :summary, "Fetch a center"
             key :description, "Fetch a center using its ID"
             key :operationId, "fetchCenter"
             key :tags, ["center"]
@@ -197,7 +197,7 @@ module Api::V1
           end
 
           operation :get do
-            key :summary, "Fetches events belonging to a center"
+            key :summary, "Fetch events belonging to a center"
             key :description, "Fetches events belonging to a center"
             key :operationId, "fetchCenterEvents"
             key :tags, ["center"]

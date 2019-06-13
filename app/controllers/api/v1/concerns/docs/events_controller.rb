@@ -25,17 +25,17 @@ module Api::V1
           end
         end
 
-        swagger_path "/events/{id}" do
+        swagger_path '/events/{id}' do
           operation :get do
-            key :summary, "Fetch an event"
-            key :description, "Returns an event"
-            key :operationId, "findEvent"
-            key :tags, ["event"]
+            key :summary, 'Fetch an event'
+            key :description, 'Returns an event'
+            key :operationId, 'findEvent'
+            key :tags, ['event']
 
             parameter :event_id
 
             response 200 do
-              key :description, "event returned successfully"
+              key :description, 'Event returned successfully'
               schema do
                 key :'$ref', Event
               end
@@ -43,10 +43,10 @@ module Api::V1
           end
 
           operation :put do
-            key :summary, "Update an event"
-            key :description, "Updates an event"
-            key :operationId, "updateEvent"
-            key :tags, ["event"]
+            key :summary, 'Update an event'
+            key :description, 'Updates an event'
+            key :operationId, 'updateEvent'
+            key :tags, ['event']
 
             parameter do
               key :name, :id
@@ -58,7 +58,7 @@ module Api::V1
             parameter do
               key :name, :body
               key :in, :body
-              key :description, "Event to be saved"
+              key :description, 'Event to be saved'
               key :required, true
               schema do
                 key :'$ref', :Event
@@ -66,22 +66,22 @@ module Api::V1
             end
 
             response 200 do
-              key :description, "event updated successfully"
+              key :description, 'Event updated successfully'
               schema do
                 key :'$ref', Event
               end
             end
             response 401 do
-              key :description, "user is not authorized"
+              key :description, 'User is not authorized'
             end
             response 404 do
-              key :description, "event was not found"
+              key :description, 'Event was not found'
             end
             response 409 do
-              key :description, "event name already exists/time overlaps"
+              key :description, 'Event name already exists/time overlaps'
             end
             response 422 do
-              key :description, "an error occured"
+              key :description, 'An error occured'
             end
 
             security do

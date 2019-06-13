@@ -1,5 +1,7 @@
 module Api::V1
   class UsersController < ApplicationController
+    include Api::V1::Concerns::Docs::UsersController
+
     before_action :authenticate_user, only: :show
     def create
       @user = User.create!(user_params)

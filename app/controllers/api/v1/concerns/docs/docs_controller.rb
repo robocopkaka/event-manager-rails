@@ -80,8 +80,10 @@ module Api
             SWAGGERED_CLASSES =  [
               Api::V1::EventsController,
               Api::V1::CentersController,
+              Api::V1::UsersController,
               Center,
               Event,
+              User,
               self
             ].freeze
 

@@ -8,12 +8,12 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :centers, concerns: :eventable
       resources :events, only: :index
-      resources :users do
+      resources :users, only: %i[create show] do
         resources :events, only: :index
         resources :centers, only: %i[index]
       end
       post 'login' => 'user_token#create'
-      get '/apidocs' => redirect('/swagger-ui/dist/index.html?url=http://localhost:3001/api/v1/docs')
+      get '/apidocs' => redirect('/swagger-ui/dist/index.html?url=/api/v1/docs')
       resources :docs, only: [:index]
     end
   end
