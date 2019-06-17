@@ -32,7 +32,13 @@ module Api::V1
             key :operationId, 'findEvent'
             key :tags, ['event']
 
-            parameter :event_id
+            parameter do
+              key :name, :id
+              key :in, :path
+              key :required, true
+              key :type, :integer
+              key :format, :int32
+            end
 
             response 200 do
               key :description, 'Event returned successfully'
@@ -53,7 +59,7 @@ module Api::V1
               key :in, :path
               key :required, true
               key :type, :integer
-              key :format, :int64
+              key :format, :int32
             end
             parameter do
               key :name, :body

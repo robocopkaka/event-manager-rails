@@ -30,8 +30,7 @@ module Api
                 # end
               end
               key :schemes, ['https', 'http']
-              key :host, 'localhost:3001'
-              # key :host, 'shielded-citadel-82961.herokuapp.com'
+              key :host, 'shielded-citadel-82961.herokuapp.com'
               key :basePath, '/api/v1'
               key :consumes, ['application/json', 'application/x-www-form-urlencoded']
               key :produces, ['application/json']
