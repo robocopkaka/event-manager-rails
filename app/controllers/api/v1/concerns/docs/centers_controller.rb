@@ -71,7 +71,13 @@ module Api::V1
             key :operationId, "updateCenter"
             key :tags, ["center"]
 
-            parameter :id
+            parameter do
+              key :name, :id
+              key :in, :path
+              key :required, true
+              key :type, :integer
+              key :format, :int32
+            end
             parameter :center_name
             parameter :center_description
             parameter :center_address
@@ -111,7 +117,13 @@ module Api::V1
             key :operationId, "fetchCenter"
             key :tags, ["center"]
 
-            parameter :id
+            parameter do
+              key :name, :id
+              key :in, :path
+              key :required, true
+              key :type, :integer
+              key :format, :int32
+            end
 
             response 200 do
               key :description, "Center was retrieved successfully"

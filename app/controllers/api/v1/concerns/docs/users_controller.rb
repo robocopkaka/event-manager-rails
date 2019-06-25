@@ -49,16 +49,17 @@ module Api::V1
             key :operationId, "fetchUser"
             key :tags, ["user"]
 
-            parameter :id
+            parameter do
+              key :name, :id
+              key :in, :path
+              key :required, true
+              key :type, :integer
+              key :format, :int32
+            end
 
             response 200 do
               key :description, "Users retrieved successfully"
-              schema do
-                key :type, :array
-                items do
-                  key :'$ref', :ReturnedUser
-                end
-              end
+              schema { key :'$ref', :ReturnedUser }
             end
             response 500 do
               key :description, "Internal server error"
