@@ -1,7 +1,8 @@
 module Api::V1
   class EventsController < ApplicationController
+    include Api::V1::Concerns::Docs::EventsController
     before_action :authenticate_user, only: %i[create update]
-    before_action :find_center, only: %i[create update index show]
+    before_action :find_center, only: %i[create]
     before_action :find_event, only: %i[show update destroy]
 
     def create
@@ -10,7 +11,7 @@ module Api::V1
     end
 
     def index
-      @events = @center.upcoming_events(params[:filter])
+      @events = EventService.fetch_events(params)
       json_response(@events, 'events', 'Successfully retrieved events', :ok)
     end
 
@@ -23,7 +24,7 @@ module Api::V1
     def event_params
       params.require(:event).permit(
         :name, :guests, :image, :description, :start_time, :end_time
-      )
+      ).merge!(user_id: current_user.id)
     end
 
     def find_center
@@ -31,7 +32,7 @@ module Api::V1
     end
 
     def find_event
-      @event = @center.find_event!(params[:id])
+      @event = Event.find_by!(id: params[:id])
     end
   end
 end

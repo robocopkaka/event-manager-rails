@@ -7,8 +7,8 @@
   },
   "scripts": {
     "build": "yarn --cwd client install && yarn --cwd client build",
+    "swagger": "cp -a vendor/swagger-ui public/",
     "deploy": "cp -a client/build/. public/",
-    "heroku-postbuild": "yarn build && yarn deploy && echo 'Client built!'"
-  },
-  "dependencies": {}
+    "heroku-postbuild": "yarn build && yarn deploy && yarn swagger && echo 'Client built!'"
+  }
 }

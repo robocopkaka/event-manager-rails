@@ -15,5 +15,9 @@ FactoryBot.define do
     end
     center_id { create(:center).id }
     user_id { create(:user).id }
+
+    trait :skip_validate do
+      to_create {|instance| instance.save(validate: false)}
+    end
   end
 end

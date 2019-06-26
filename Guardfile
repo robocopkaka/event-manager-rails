@@ -58,6 +58,11 @@ guard :rspec, cmd: "bundle exec rspec" do
   watch(rails.routes)          { "#{rspec.spec_dir}/routing" }
   watch(rails.app_controller)  { "#{rspec.spec_dir}/controllers" }
 
+  # spec changes
+  watch(%r{^app/(.+)\.rb$})                               { |m| "spec/#{m[1]}_spec.rb" }
+  watch(%r{^app/controllers/(.+)_controller\.rb$})        { |m| "spec/requests/#{m[1]}_spec.rb" }
+  watch(%r{^app/services/(.+)_service\.rb$})        { |m| "spec/services/#{m[1]}_spec.rb" }
+
   # Capybara features specs
   watch(rails.view_dirs)     { |m| rspec.spec.call("features/#{m[1]}") }
   watch(rails.layouts)       { |m| rspec.spec.call("features/#{m[1]}") }

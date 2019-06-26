@@ -98,40 +98,80 @@ RSpec.describe 'Events API' do
   end
 
   describe "#index" do
-    context "when no upcoming flag is set in the query" do
-      let!(:events) { create_list :event, 5, center: center }
-      before { get api_v1_center_events_path(center_id) }
-
-      it "returns all the events" do
-        returned_events = json["data"]["events"]
-        expect(response).to have_http_status(200)
-        expect(returned_events.count).to eq 5
-        expect(returned_events.first["name"]).to eq Event.first.name
-      end
-    end
-
-    context "when an upcoming flag is set" do
+    describe "when center is in params" do
       before do
         travel_to Time.local(2018)
-        create_list :event, 5, center: center
+        create_list :event, 5, :skip_validate, center: center
         travel_back
-        create_list :event, 5, center: center
-        get api_v1_center_events_path(center_id), params: { filter: "upcoming" }
+        create_list :event, 5, :skip_validate, center: center
       end
-      it "returns only future events" do
-        returned_events = json["data"]["events"]
-        expect(response).to have_http_status(200)
-        expect(returned_events.count).to eq 5
+
+      context "when no upcoming flag is set in the query" do
+        before { get api_v1_center_events_path(center_id) }
+        it "returns all the events" do
+          returned_events = json["data"]["events"]
+          expect(response).to have_http_status(200)
+          expect(returned_events.count).to eq 10
+          expect(returned_events.first["name"]).to eq Event.first.name
+        end
+      end
+
+      context "when an upcoming flag is set" do
+        before { get api_v1_center_events_path(center_id), params: { filter: "upcoming" } }
+        it "returns only future events" do
+          returned_events = json["data"]["events"]
+          expect(response).to have_http_status(200)
+          expect(returned_events.count).to eq 5
+        end
+      end
+
+      context "when the center has no events" do
+        let!(:new_center) { create :center }
+        before { get api_v1_center_events_path(new_center.id) }
+
+        it "should return an empty array" do
+          expect(response).to have_http_status(200)
+          expect(json["data"]["events"].count).to eq 0
+        end
       end
     end
 
-    context "when the center has no events" do
-      let!(:new_center) { create :center }
-      before { get api_v1_center_events_path(new_center.id) }
+    describe "when user is in params" do
+      let!(:events) { create_list :event, 5, center: center, user: new_user }
+      before { get api_v1_user_events_path(user_id) }
+      context "when no upcoming flag is set in the query" do
+        it "returns all the events" do
+          returned_events = json["data"]["events"]
+          expect(response).to have_http_status(200)
+          expect(returned_events.count).to eq 5
+          expect(returned_events.first["name"]).to eq Event.first.name
+        end
+      end
 
-      it "should return an empty array" do
-        expect(response).to have_http_status(200)
-        expect(json["data"]["events"].count).to eq 0
+      context "when an upcoming flag is set" do
+        before do
+          travel_to Time.local(2018)
+          create_list :event, 5, :skip_validate, center: center
+          travel_back
+          create_list :event, 5, :skip_validate, center: center
+          get api_v1_user_events_path(user_id), params: { filter: "upcoming" }
+        end
+        it "returns only future events" do
+          returned_events = json["data"]["events"]
+          expect(response).to have_http_status(200)
+          expect(returned_events.count).to eq 5
+        end
+      end
+
+      context "when the user has no events" do
+        let!(:different_user) { create :user }
+        before { get api_v1_user_events_path(user_id: different_user.id) }
+
+        it "should return an empty array" do
+          expect(response).to have_http_status(200)
+          # binding.pry
+          expect(json["data"]["events"].count).to eq 0
+        end
       end
     end
   end
@@ -140,7 +180,7 @@ RSpec.describe 'Events API' do
     let!(:event) { create :event, center: center }
     let(:event_id) { event.id }
     context "when a valid ID is passed" do
-      before { get api_v1_center_event_path(center_id: center_id, id: event_id) }
+      before { get api_v1_event_path(id: event_id) }
 
       it "returns the actual event" do
         returned_event = json["data"]["event"]
@@ -151,21 +191,11 @@ RSpec.describe 'Events API' do
     end
 
     context "when an invalid event ID is passed" do
-      before { get api_v1_center_event_path(center_id: center_id, id: 1000) }
+      before { get api_v1_event_path(id: 1000) }
 
       it "should return an error" do
         expect(response).to have_http_status(404)
-        expect(json["message"]).to match "Couldn't find Event"
-      end
-    end
-
-    context "when the event isn't in a particular center" do
-      let!(:new_center) { create :center }
-      before { get api_v1_center_event_path(center_id: new_center.id, id: event_id) }
-
-      it "should return an error" do
-        expect(response).to have_http_status(404)
-        expect(json["message"]).to match "Couldn't find Event"
+        expect(json["message"]).to match "Resource was not found"
       end
     end
   end

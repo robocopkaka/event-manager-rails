@@ -2,11 +2,12 @@
 require 'rails_helper'
 
 RSpec.describe 'Centers API', type: :request do
-  let!(:centers) { create_list :center, 10 }
+  let!(:user) { create :user, admin: true }
+  let!(:centers) { create_list :center, 10, user: user }
   let(:center_id) { centers.first.id }
 
   context 'GET /api/v1/centers' do
-    before { get '/api/v1/centers' }
+    before { get api_v1_centers_path }
 
     it 'returns the centers in the database' do
       expect(json).to_not be_empty
@@ -41,21 +42,18 @@ RSpec.describe 'Centers API', type: :request do
       end
 
       it 'should return an error message' do
-        expect(json["message"]).to eq "Couldn't find Center"
+        expect(json["message"]).to eq "Resource was not found"
       end
     end
   end
 
-  describe 'post /api/v1/centers' do
+  describe 'post /api/v1/users/:user_id/centers' do
     let(:params) {{ center: attributes_for(:center)}}
 
 
     context 'when it receives valid input' do
       let!(:user) { create :user, admin: true}
-      before(:each) do
-       headers = authenticated_headers(user.id)
-        post '/api/v1/centers', params: params, headers: headers
-      end
+      before { post api_v1_centers_path, params: params, headers: authenticated_headers(user.id) }
 
       it 'should return an object containing the newly created center' do
         expect(json).to_not be_empty
@@ -74,8 +72,7 @@ RSpec.describe 'Centers API', type: :request do
       before do
         invalid_params = { center: FactoryBot.attributes_for(:center) }
         invalid_params[:center].delete(:name)
-        headers = authenticated_headers(user.id)
-        post '/api/v1/centers', params: invalid_params, headers: headers
+        post api_v1_centers_path, params: invalid_params, headers: authenticated_headers(user.id)
       end
 
       it 'should return a 422' do

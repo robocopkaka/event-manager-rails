@@ -1,15 +1,20 @@
 Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
-  post 'centers/create'
-  get 'centers', to: 'centers#index'
+  concern :eventable do
+    resources :events, shallow: true
+  end
 
   namespace :api do
     namespace :v1 do
-      resources :centers do
-        resources :events
+      resources :centers, concerns: :eventable
+      resources :events, only: :index
+      resources :users, only: %i[create show] do
+        resources :events, only: :index
+        resources :centers, only: %i[index]
       end
-      resources :users
-      post 'user_token' => 'user_token#create'
+      post 'login' => 'user_token#create'
+      get '/apidocs' => redirect('/swagger-ui/dist/index.html?url=/api/v1/docs')
+      resources :docs, only: [:index]
     end
   end
 
