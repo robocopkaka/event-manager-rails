@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import '../stylesheets/single-center.scss';
 import event from '../../../images/Events-1200x630.jpg';
@@ -20,6 +21,9 @@ const CenterPage = ({ center }) => {
                 <br />
                 <span id="center-description">{center.description}</span>
               </p>
+              <div id="event-button">
+                <Link to={`/centers/${center.id}/add-event`} className="button is-medium"> Add Event </Link>
+              </div>
             </div>
           </div>
         </div>

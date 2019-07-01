@@ -1,0 +1,52 @@
+#events-form {
+  padding: 5vh 0;
+  width: 500px;
+  background: #FFFFFF;
+  #inside {
+    padding: 30px;
+    box-shadow: 3px 3px 5px 6px #4A2545;
+
+    #event-date {
+      input {
+        font-size: 15px;
+        border-radius: 5px;
+        &:focus{
+          border: 1px solid #4A2545;
+        }
+      }
+    }
+
+    #event-times {
+      input {
+        font-size: 15px;
+        border-radius: 5px;
+        &:focus{
+          border: 1px solid #4A2545;
+        }
+      }
+
+      #from-time {
+        padding-right: 10px;
+      }
+
+      #time-separator {
+        padding-right: 10px;
+      }
+    }
+
+    input {
+      &:focus{
+        border: 1px solid #4A2545;
+      }
+    }
+    textarea {
+      &:focus{
+        border: 1px solid #4A2545;
+      }
+    }
+    .is-primary {
+      background: #4A2545;
+      color: #FFFFFF;
+    }
+  }
+}

@@ -21,7 +21,7 @@ class SingleCenter extends Component {
 
     const styles  = {
       fontFamily: `${this.props.center.font_family}`
-    }
+    };
     const { center } = this.props;
     return (
       <Fragment>

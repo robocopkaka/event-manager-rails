@@ -15,6 +15,13 @@ export default {
     errorMessage: '',
     isLoading: false
   },
+  events: {
+    events: [],
+    event: {},
+    message: '',
+    toastType: '',
+    isLoading: ''
+  },
   active: {
     centers: false,
     events: false,
