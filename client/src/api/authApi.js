@@ -15,7 +15,7 @@ class AuthApi {
   }
 
   static login(user) {
-    return axios.post('api/v1/user_token', user, {
+    return axios.post('api/v1/login', user, {
       headers: {
         'Content-Type': 'application/json'
       }

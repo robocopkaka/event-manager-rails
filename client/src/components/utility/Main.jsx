@@ -13,10 +13,10 @@ const Main = () => (
     <Switch>
       <Route exact path="/" component={Centers} />
       <Route exact path="/centers" component={Centers} />
-      <Route path="/centers/:id" component={SingleCenter} />
+      <Route exact path="/centers/:id" component={SingleCenter} />
       <Route path="/add-center" component={AddCenter} />
-      <Route path="/centers/:id/edit" component={EditCenter} />
-      <Route path="/add-event" component={AddEvent} />
+      <Route exact path="/centers/:id/edit" component={EditCenter} />
+      <Route exact path="/centers/:id/add-event" component={AddEvent} />
       <Route exact path="/signup" component={Signup} />
       <Route exact path="/login" component={Login} />
     </Switch>

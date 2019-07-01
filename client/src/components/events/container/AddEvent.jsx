@@ -5,7 +5,10 @@ import moment from 'moment';
 import EventsForm from '../presentation/EventsForm';
 import '../stylesheets/events-form.scss';
 import eventValidator from '../../../helpers/validators/eventForm';
+import resetEventFields from '../../../helpers/resetFields/resetEventFields';
 import * as eventActions from '../../../actions/eventActions';
+import Toast from '../../utility/Toast';
+import history from '../../../history';
 
 class AddEvent extends Component {
   constructor(props) {
@@ -32,6 +35,10 @@ class AddEvent extends Component {
     this.handleStartTimeChange = this.handleStartTimeChange.bind(this);
     this.handleEndTimeChange = this.handleEndTimeChange.bind(this);
     this.submitEvent = this.submitEvent.bind(this);
+  }
+
+  componentDidMount() {
+    this.centerId = this.props.match.params.id;
   }
 
   handleChange(e) {
@@ -73,21 +80,30 @@ class AddEvent extends Component {
 
     if (this.validForm()) {
       const newDate = moment(date).format('YYYY-MM-DD');
-      const start = moment(`${newDate.toString()} ${startTime.toString()}`, 'YYYY-MM-DDLT').format('YYYY-MM-DDTHH:mm:ss');
-      const end = moment(`${newDate.toString()} ${endTime.toString()}`, 'YYYY-MM-DDLT').format('YYYY-MM-DDTHH:mm:ss');
+      const start = moment.utc(`${newDate.toString()} ${startTime.toLocaleTimeString()}`, 'YYYY-MM-DDLT').format('YYYY-MM-DD HH:mm:ss');
+      const end = moment.utc(`${newDate.toString()} ${endTime.toLocaleTimeString()}`, 'YYYY-MM-DDLT').format('YYYY-MM-DD HH:mm:ss');
       const event = new FormData();
       event.append('event[name]', name);
       event.append('event[description]', description);
       event.append('event[guests]', guests);
       event.append('event[start_time]', start);
       event.append('event[end_time]', end);
+      console.log(this.props.actions)
 
-      this.props.actions.addEvent(event);
+      this.props.actions.saveEvent(event, this.centerId)
+        .then(() => {
+          this.setState(resetEventFields);
+          history.push(`/centers/${this.centerId}`);
+        })
+        .catch(() => {});
     }
   }
 
   render() {
-    const { name, guests, description, startTime, endTime, date } = this.state;
+    const {
+      name, guests, description, startTime, endTime, date
+    } = this.state;
+    const { message, toastType } = this.props;
     return (
       <Fragment>
         <div className="container" id="events-form">
@@ -107,6 +123,7 @@ class AddEvent extends Component {
             />
           </div>
         </div>
+        <Toast type={toastType} message={message} />
       </Fragment>
     );
   }
@@ -118,4 +135,11 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(null, mapDispatchToProps)(AddEvent);
+function mapStateToProps(state) {
+  return {
+    toastType: state.events.toastType,
+    message: state.events.message
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddEvent);

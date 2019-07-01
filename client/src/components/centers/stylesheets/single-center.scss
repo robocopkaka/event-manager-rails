@@ -3,6 +3,9 @@
     height: 20rem;
     #center-page-right {
       padding: 30px 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
 
       #center-name {
         font-weight: bold;
@@ -21,6 +24,14 @@
         #center-description {
           font-weight: 100;
           line-height: 2rem;
+        }
+      }
+
+      #event-button {
+        .button {
+          width: 30vw;
+          background-color: #4A2545;
+          color: #FFF;
         }
       }
     }

@@ -1,17 +1,16 @@
 import axios from 'axios';
 
 class EventApi {
-  static addEvent(event) {
-    return axios.post('/api/v1/centers/1/events', event, {
+  static addEvent(event, centerId) {
+    return axios.post(`/api/v1/centers/${centerId}/events`, event, {
       headers: {
-        Authorization: `${localStorage.token}`
+        Authorization: `Bearer ${localStorage.token}`
       }
     })
       .then(response => response)
       .catch((error) => {
-        throw error
+        throw error;
       });
   }
 }
 export default EventApi;
-
