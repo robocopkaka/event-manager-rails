@@ -1,0 +1,38 @@
+#events-set {
+  #event-column {
+    padding: 20px;
+    height: 250px;
+
+    #event-card {
+      .content {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 180px;
+        max-height: 180px;
+
+        .event-time {
+          font-weight: bold;
+          color: #7F557D;
+        }
+        .event-name {
+          font-weight: bolder;
+          font-size: 20px;
+        }
+        .event-address {
+
+        }
+        #event-attendees {
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+
+          .button {
+            color: #FFF;
+            background-color: #4A2545;
+          }
+        }
+      }
+    }
+  }
+}

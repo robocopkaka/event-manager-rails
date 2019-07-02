@@ -5,7 +5,7 @@ import {
   ADD_CENTER_SUCCESS,
   CLEAR_CENTER_ACTION_MESSAGE,
   FETCH_CENTERS_SUCCESS,
-  FETCH_SINGLE_CENTER_SUCCESS, UPDATE_CENTER_SUCCESS
+  FETCH_SINGLE_CENTER_SUCCESS, UPDATE_CENTER_SUCCESS, FETCH_CENTER_EVENTS_SUCCESS
 } from './actionTypes';
 
 export function fetchCentersSuccess(centers) {
@@ -35,6 +35,10 @@ export function fetchSingleCenterSuccess(center) {
   return { type: FETCH_SINGLE_CENTER_SUCCESS, center };
 }
 
+export function fetchCenterEventsSuccess(events) {
+  return { type: FETCH_CENTER_EVENTS_SUCCESS, events }
+}
+
 
 export function fetchCenters() {
   return (dispatch) => {
@@ -44,6 +48,16 @@ export function fetchCenters() {
       })
       .catch((error) => {
         throw (error);
+      });
+  };
+}
+
+export function fetchCenterEvents(id) {
+  return (dispatch) => {
+    return CenterApi.fetchCenterEvents(id)
+      .then((response) => {
+        console.log(response.data.data.events);
+        dispatch(fetchCenterEventsSuccess(response.data.data.events));
       });
   };
 }

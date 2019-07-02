@@ -13,19 +13,19 @@ class SingleCenter extends Component {
 
   componentDidMount() {
     const { match: { params: { id } } } = this.props;
-    this.props.actions.fetchSingleCenter(id)
+    const { actions: { fetchCenterEvents, fetchSingleCenter } } = this.props
+    fetchSingleCenter(id);
+    fetchCenterEvents(id);
   }
 
   render() {
-    console.log(this.props.center);
-
     const styles  = {
       fontFamily: `${this.props.center.font_family}`
     };
-    const { center } = this.props;
+    const { center, events } = this.props;
     return (
       <Fragment>
-        <CenterPage center={center} style={styles} />
+        <CenterPage center={center} events={events} style={styles} />
       </Fragment>
     );
   }
@@ -39,8 +39,18 @@ SingleCenter.propTypes = {
     capacity: PropTypes.number,
     description: PropTypes.string,
   }),
+  events: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number,
+      name: PropTypes.string,
+      description: PropTypes.string,
+      start_time: PropTypes.string,
+      end_time: PropTypes.string,
+    })
+  ),
   actions: PropTypes.shape({
-    fetchSingleCenter: PropTypes.func
+    fetchSingleCenter: PropTypes.func,
+    fetchCenterEvents: PropTypes.func
   }),
   match: PropTypes.shape({
     params: PropTypes.shape({
@@ -51,13 +61,15 @@ SingleCenter.propTypes = {
 
 SingleCenter.defaultProps = {
   center: {},
+  events: [],
   actions: {},
   match: {}
 };
 
 function mapStateToProps(state) {
   return {
-    center: state.centers.center
+    center: state.centers.center,
+    events: state.events.events
   };
 }
 

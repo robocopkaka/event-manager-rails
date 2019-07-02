@@ -35,6 +35,14 @@ class CenterApi {
       });
   }
 
+  static fetchCenterEvents(id) {
+    return axios.get(`/api/v1/centers/${id}/events`)
+      .then(response => response)
+      .catch((error) => {
+        throw error;
+      });
+  }
+
   static updateCenter(id, center) {
     return axios.put(`/api/v1/centers/${id}`, center, {
       headers: {
