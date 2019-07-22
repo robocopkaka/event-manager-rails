@@ -50,7 +50,8 @@ const CenterPage = ({ center, events }) => {
                         </div>
                         <div id="event-attendees">
                           <div id="attendees">
-                            {event.guests} slots remaining
+                            {event.guests}
+                            {' slots remaining'}
                           </div>
                           <div id="book-event">
                             <Link to={'#'} className="button is-medium">Book</Link>

@@ -19,13 +19,10 @@ class SingleCenter extends Component {
   }
 
   render() {
-    const styles  = {
-      fontFamily: `${this.props.center.font_family}`
-    };
     const { center, events } = this.props;
     return (
       <Fragment>
-        <CenterPage center={center} events={events} style={styles} />
+        <CenterPage center={center} events={events} />
       </Fragment>
     );
   }
