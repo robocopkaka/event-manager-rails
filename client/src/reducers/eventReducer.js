@@ -31,6 +31,11 @@ export default function eventReducer(state = initialState.events, action) {
         toastType: { $set: '' }
       });
       return newState;
+    case types.FETCH_CENTER_EVENTS_SUCCESS:
+      newState = update(state, {
+        events: { $set: action.events }
+      });
+      return newState;
     default:
       return state;
   }

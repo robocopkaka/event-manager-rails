@@ -1,18 +1,19 @@
 import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
+import moment from 'moment';
 import '../stylesheets/single-center.scss';
-import event from '../../../images/Events-1200x630.jpg';
+import '../../events/stylesheets/events.scss';
+import eventImg from '../../../images/Events-1200x630.jpg';
 
 
-const CenterPage = ({ center }) => {
+const CenterPage = ({ center, events }) => {
   return (
     <Fragment>
       <div className="center-page">
         <div id="center-details">
           <div className="columns">
             <div className="column is-two-fifths" id="center-page-left">
-              <img src={event} alt="" />
+              <img src={eventImg} alt="" />
             </div>
             <div className="column is-three-fifths" id="center-page-right">
               <h2 id="center-name">{center.name}</h2>
@@ -31,91 +32,36 @@ const CenterPage = ({ center }) => {
         <div className="center-events">
           <h2 id="center-events-heading">Upcoming events</h2>
           <div className="container">
-            <div className="columns is-8">
-              <div className="column is-one-third" id="center-column" key={1}>
-                <div className="card" id="center-card">
-                  <div className="card-image">
-                    <figure className="image is-3by3">
-                      <img src={event} alt=""/>
-                    </figure>
-                  </div>
-                  <div className="card-content">
-                    <div className="content">
-                      <div className="center-name">{center.name}</div>
-                      <div className="center-address">
-                        {center.address}
+            <div className="columns is-8 is-multiline" id="events-set">
+              {events.map((event) => (
+                <div className="column is-4 is-mobile" id="event-column" key={event.id}>
+                  <div className="card" id="event-card">
+                    <div className="card-content">
+                      <div className="content">
+                        <div className="event-time">
+                          {moment(event.start_time).format('LLL')}
+                        </div>
+                        <div className="event-name">{event.name}</div>
+                        <div className="event-address">
+                          <span className="icon">
+                            <i className="fa fa-map-marker" />
+                          </span>
+                          {center.address}
+                        </div>
+                        <div id="event-attendees">
+                          <div id="attendees">
+                            {event.guests}
+                            {' slots remaining'}
+                          </div>
+                          <div id="book-event">
+                            <Link to={'#'} className="button is-medium">Book</Link>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
-                  <footer className="card-footer">
-                    <div id="center-capacity">
-                      <span id="capacity-heading">Capacity</span> <br/>
-                      <span>{center.capacity}</span>
-                    </div>
-                    <div className="is-divider-vertical" />
-                    <div id="center-others">
-                      <span id="capacity-heading">Book</span> <br/>
-                      <span>Now</span>
-                    </div>
-                  </footer>
                 </div>
-              </div>
-              <div className="column is-one-third" id="center-column" key={1}>
-                <div className="card" id="center-card">
-                  <div className="card-image">
-                    <figure className="image is-3by3">
-                      <img src={event} alt=""/>
-                    </figure>
-                  </div>
-                  <div className="card-content">
-                    <div className="content">
-                      <div className="center-name">{center.name}</div>
-                      <div className="center-address">
-                        {center.address}
-                      </div>
-                    </div>
-                  </div>
-                  <footer className="card-footer">
-                    <div id="center-capacity">
-                      <span id="capacity-heading">Capacity</span> <br/>
-                      <span>{center.capacity}</span>
-                    </div>
-                    <div className="is-divider-vertical" />
-                    <div id="center-others">
-                      <span id="capacity-heading">Book</span> <br/>
-                      <span>Now</span>
-                    </div>
-                  </footer>
-                </div>
-              </div>
-              <div className="column is-one-third" id="center-column" key={1}>
-                <div className="card" id="center-card">
-                  <div className="card-image">
-                    <figure className="image is-3by3">
-                      <img src={event} alt=""/>
-                    </figure>
-                  </div>
-                  <div className="card-content">
-                    <div className="content">
-                      <div className="center-name">{center.name}</div>
-                      <div className="center-address">
-                        {center.address}
-                      </div>
-                    </div>
-                  </div>
-                  <footer className="card-footer">
-                    <div id="center-capacity">
-                      <span id="capacity-heading">Capacity</span> <br/>
-                      <span>{center.capacity}</span>
-                    </div>
-                    <div className="is-divider-vertical" />
-                    <div id="center-others">
-                      <span id="capacity-heading">Book</span> <br/>
-                      <span>Now</span>
-                    </div>
-                  </footer>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </div>
