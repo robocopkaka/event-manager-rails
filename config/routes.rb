@@ -7,10 +7,19 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :centers, concerns: :eventable
-      resources :events, only: :index
+      resources :events, only: :index do
+        member do
+          post 'book', to: 'bookings#create'
+          delete 'cancel_booking', to: 'bookings#destroy'
+          get 'attendees', to: 'bookings#attendees'
+        end
+      end
       resources :users, only: %i[create show] do
         resources :events, only: :index
         resources :centers, only: %i[index]
+        member do
+          get 'reservations', to: 'bookings#reservations'
+        end
       end
       post 'login' => 'user_token#create'
       get '/apidocs' => redirect('/swagger-ui/dist/index.html?url=/api/v1/docs')
