@@ -2,8 +2,12 @@ class User < ApplicationRecord
   include Concerns::Docs::User
   include EmailValidation
   has_secure_password
+
   has_many :events
   has_many :centers
+
+  has_many :bookings
+  has_many :reservations, through: :bookings, source: :event
 
   # validates_uniqueness_of :email
   validates_presence_of :name, :email, :password, :password_confirmation
@@ -17,7 +21,7 @@ class User < ApplicationRecord
     def upcoming_events(filter=nil)
       return all_events if filter.nil?
 
-      events.where('start_time > ?', Time.now).order(created_at: :asc)
+      all_events.where('start_time > ?', Time.now).order(created_at: :asc)
     end
   end
 
