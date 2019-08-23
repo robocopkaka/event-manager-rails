@@ -7,6 +7,9 @@ module Api::V1
 
     def create
       @event = @center.events.create!(event_params)
+      unless params[:address].nil?
+        @event.build_address(address_params).save!
+      end
       json_response(@event, 'event', 'Event was created successfully', :created)
     end
 
@@ -25,6 +28,12 @@ module Api::V1
       params.require(:event).permit(
         :name, :guests, :image, :description, :start_time, :end_time
       ).merge!(user_id: current_user.id)
+    end
+
+    def address_params
+      params.require(:address).permit(
+        :address_line1, :address_line2, :city, :state, :country
+      )
     end
 
     def find_center

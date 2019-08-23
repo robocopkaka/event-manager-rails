@@ -5,6 +5,8 @@ class Event < ApplicationRecord
   belongs_to :center
   belongs_to :user
 
+  has_one :address, as: :addressable
+
   has_many :bookings
   has_many :attendees, through: :bookings, source: :user
 
