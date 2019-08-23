@@ -63,7 +63,7 @@ RSpec.describe 'Bookings API' do
       get reservations_api_v1_user_path(user.id), headers: authenticated_headers(user.id)
     end
     it 'returns the users reservations' do
-      reservation_ids = json['data']['reservations'].pluck('id').to_set
+      reservation_ids = json['data']['events'].pluck('id').to_set
       event_ids = Booking.where(user_id: user.id).pluck(:event_id).to_set
       expect(response).to have_http_status 200
       expect(event_ids).to eq reservation_ids
@@ -76,7 +76,7 @@ RSpec.describe 'Bookings API' do
       get attendees_api_v1_event_path(event.id), headers: authenticated_headers(user.id)
     end
     it 'returns attendees for an events' do
-      attendee_ids = json['data']['attendees'].pluck('id').to_set
+      attendee_ids = json['data']['users'].pluck('id').to_set
       user_ids = Booking.where(event_id: event.id).pluck(:user_id).to_set
       expect(response).to have_http_status 200
       expect(user_ids).to eq attendee_ids

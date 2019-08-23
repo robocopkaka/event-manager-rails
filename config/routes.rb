@@ -22,6 +22,7 @@ Rails.application.routes.draw do
         end
       end
       post 'login' => 'user_token#create'
+      get 'profile', to: 'users#profile'
       get '/apidocs' => redirect('/swagger-ui/dist/index.html?url=/api/v1/docs')
       resources :docs, only: [:index]
     end

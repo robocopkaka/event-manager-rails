@@ -2,13 +2,18 @@ module Api::V1
   class UsersController < ApplicationController
     include Api::V1::Concerns::Docs::UsersController
 
-    before_action :authenticate_user, only: :show
+    before_action :authenticate_user, only: :profile
+    before_action :find_user, only: :show
     def create
       @user = User.create!(user_params)
       json_response(@user, 'user', 'User was successfully created', :created)
     end
 
     def show
+      json_response(@user, 'user', 'User was retrieved successfully')
+    end
+
+    def profile
       json_response(current_user, 'user', 'User was retrieved successfully')
     end
     # def update
@@ -21,6 +26,10 @@ module Api::V1
 
     def user_params
       params.require(:user).permit(:name, :email, :password_digest, :password, :password_confirmation)
+    end
+
+    def find_user
+      @user = User.find_by!(id: params[:id])
     end
   end
 end

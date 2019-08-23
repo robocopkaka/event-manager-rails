@@ -53,6 +53,28 @@ RSpec.describe 'Users API' do
     end
   end
 
+  describe 'GET /api/v1/profile' do
+    let!(:users) { create_list :user, 10 }
+    let(:user_id) { users.first.id }
+
+    context 'when a valid token is passed' do
+      before do
+        get "/api/v1/profile", headers: authenticated_headers(user_id)
+      end
+
+      it 'should return a 200 status code' do
+        expect(response).to have_http_status(200)
+      end
+
+      it 'returns the actual user object' do
+        expect(json["data"]["user"]).to_not be_empty
+        expect(json["data"]["user"]["id"]).to eq users.first["id"]
+        expect(json["data"]["user"]["name"]).to eq users.first["name"]
+        expect(json["data"]["user"]).to_not have_key :password
+      end
+    end
+  end
+
   describe "login" do
     let!(:user) { create :user }
     let(:params) { { auth: { email: user.email, password: user.password }  } }

@@ -5,9 +5,7 @@ module Response
     object = ActiveModelSerializers::SerializableResource.new(object).as_json
     response = {
       message: message,
-      data: {
-        "#{key}": object
-      }
+      data: object
     }
     render json: response, status: status
   end
