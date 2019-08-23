@@ -27,3 +27,8 @@
 /public
 /client/build
 /node_modules
+
+.DS_STORE
+.app/DS_STORE
+app/controllers/.DS_STORE
+app/controllers/api/.DS_STORE

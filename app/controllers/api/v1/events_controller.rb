@@ -32,7 +32,7 @@ module Api::V1
     end
 
     def find_event
-      @event = Event.find_by!(id: params[:id])
+      @event = Event.includes(user: :bookings).find_by!(id: params[:id])
     end
   end
 end
