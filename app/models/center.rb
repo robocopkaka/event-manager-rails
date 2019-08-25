@@ -2,7 +2,7 @@ class Center < ApplicationRecord
   include Concerns::Docs::Center
 
   belongs_to :user
-  has_one :address, as: :addressable
+  has_one :address, as: :addressable, dependent: :destroy
 
   validates_presence_of :name, :description, :capacity
   validates_uniqueness_of :name, scope: :address, case_sensitive: false, message: "has been taken in the location specified"

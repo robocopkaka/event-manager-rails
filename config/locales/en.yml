@@ -31,5 +31,5 @@
 
 en:
   hello: "Hello world"
-  errors:
-    format: '%{message}'
+#  errors:
+#    format: '%{message}'

@@ -11,11 +11,11 @@ RSpec.describe 'Events API' do
     CurrentUser.user = new_user
   end
 
-  describe 'POST api/v1/centers/:id/events' do
+  describe 'POST api/v1/events' do
     let!(:params) {{ event: FactoryBot.attributes_for(:event) }}
     context 'when valid parameters are passed' do
       before do
-        post "/api/v1/centers/#{center_id}/events",
+        post "/api/v1/events",
              params: params,
              headers: authenticated_headers(user_id)
       end
@@ -34,7 +34,8 @@ RSpec.describe 'Events API' do
     context 'when posting to an invalid center_id' do
       let(:center_id) { 10000891 }
       before do
-        post "/api/v1/centers/#{center_id}/events",
+        params[:event][:center_id] = center_id
+        post "/api/v1/events",
              params: params,
              headers: authenticated_headers(user_id)
       end
@@ -44,7 +45,7 @@ RSpec.describe 'Events API' do
       end
     end
 
-    context 'when the start date overlaps with the end date for an existing event' do
+    context 'when the start date overlaps with the end date for an existing event in a center' do
       let!(:events) { create_list :event, 10, center_id: center_id }
       let(:params) do
         {
@@ -56,7 +57,7 @@ RSpec.describe 'Events API' do
         }
       end
       before do
-        post "/api/v1/centers/#{center_id}/events",
+        post "/api/v1/events",
              params: params,
              headers: authenticated_headers(user_id)
       end
@@ -82,7 +83,7 @@ RSpec.describe 'Events API' do
         }
       end
       before do
-        post "/api/v1/centers/#{center_id}/events",
+        post "/api/v1/events",
              params: params,
              headers: authenticated_headers(user_id)
       end
@@ -93,6 +94,26 @@ RSpec.describe 'Events API' do
 
       it 'should have an error message' do
         expect(json['message']).to match 'Start time is in the past'
+      end
+    end
+
+    context "when no center id is passed" do
+      let!(:params) {{
+        event: FactoryBot.attributes_for(:event),
+        address: FactoryBot.attributes_for(:address)
+      }}
+      before do
+        params[:event].delete(:center_id)
+        post "/api/v1/events",
+             params: params,
+             headers: authenticated_headers(user_id)
+      end
+      it "creates an event successfully" do
+        address = json["data"]["event"]["address"]
+        expect(response).to have_http_status 201
+        expect(address["address_line1"]).to eq params[:address][:address_line1]
+        expect(address["address_line2"]).to eq params[:address][:address_line2]
+        expect(address["city"]).to eq params[:address][:city]
       end
     end
   end

@@ -51,4 +51,47 @@ RSpec.describe EventService do
       expect(events).to eq user_events + center_events
     end
   end
+
+  describe "#create_event" do
+    let!(:event_params) { attributes_for :event }
+    let!(:address_params) { attributes_for :address }
+    let(:event_service) {
+      EventService.new(
+        {
+          event_params: event_params,
+          address_params: address_params,
+          center_id: center.id
+        }
+      )
+    }
+
+    context "when a center ID is passed" do
+      it "creates an event belonging to a center" do
+        event = event_service.create_event
+        expect(Event.last). to eq event
+        expect(center.address).to eq event.center.address
+      end
+    end
+
+    context "when a center ID is not passed" do
+      before do
+        event_params.delete(:center_id)
+      end
+      let(:event_service) {
+        EventService.new(
+          {
+            event_params: event_params,
+            address_params: address_params,
+          }
+        )
+      }
+      it "creates an event not attached to a center" do
+        event = event_service.create_event
+        expect(Event.last).to eq event
+        expect(address_params[:state]).to eq event.address.state
+        expect(address_params[:country]).to eq event.address.country
+        expect(address_params[:address_line1]).to eq event.address.address_line1
+      end
+    end
+  end
 end

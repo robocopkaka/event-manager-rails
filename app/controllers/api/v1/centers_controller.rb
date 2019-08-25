@@ -15,6 +15,7 @@ module Api::V1
 
     def update
       @center.update!(center_params)
+      @center.address.update!(address_params)
       json_response(@center, 'center', 'Center was successfully updated', :ok)
     end
 
@@ -34,6 +35,8 @@ module Api::V1
     end
 
     def address_params
+      return nil if params[:address].nil?
+
       params.require(:address).permit(
         :address_line1, :address_line2, :city, :state, :country
       )

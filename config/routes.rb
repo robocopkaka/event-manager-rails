@@ -1,13 +1,13 @@
 Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   concern :eventable do
-    resources :events, shallow: true
+    resources :events, except: :create, shallow: true
   end
 
   namespace :api do
     namespace :v1 do
       resources :centers, concerns: :eventable
-      resources :events, only: :index do
+      resources :events, only: %i[index create] do
         member do
           post 'book', to: 'bookings#create'
           delete 'cancel_booking', to: 'bookings#destroy'

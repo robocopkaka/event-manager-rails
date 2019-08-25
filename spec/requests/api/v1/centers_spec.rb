@@ -48,7 +48,12 @@ RSpec.describe 'Centers API', type: :request do
   end
 
   describe 'post /api/v1/users/:user_id/centers' do
-    let(:params) {{ center: attributes_for(:center)}}
+    let(:params) {
+      {
+        center: attributes_for(:center),
+        address: attributes_for(:address)
+      }
+    }
 
 
     context 'when it receives valid input' do
@@ -56,9 +61,12 @@ RSpec.describe 'Centers API', type: :request do
       before { post api_v1_centers_path, params: params, headers: authenticated_headers(user.id) }
 
       it 'should return an object containing the newly created center' do
+        address = json["data"]["center"]["address"]
+
         expect(json).to_not be_empty
         expect(json["data"]["center"]["name"]).to match params[:center][:name]
-        expect(json["data"]["center"]["address"]).to match params[:center][:address]
+        expect(address["city"]).to eq params[:address][:city]
+        expect(address["state"]).to eq params[:address][:state]
       end
 
       it 'should respond with a 201 status code' do
@@ -87,7 +95,12 @@ RSpec.describe 'Centers API', type: :request do
 
   describe 'PUT /api/v1/centers/:id' do
     let!(:user) { create :user, admin: true }
-    let(:params) {{ center: attributes_for(:center)}}
+    let(:params) {
+      {
+        center: attributes_for(:center),
+        address: attributes_for(:address),
+      }
+    }
 
     context 'when it receives valid parameters' do
       before do
@@ -100,7 +113,9 @@ RSpec.describe 'Centers API', type: :request do
       end
 
       it 'should have the attributes in the center match the parameters that were passed in' do
-        expect(json["data"]["center"]["address"]).to eq params[:center][:address]
+        address = json["data"]["center"]["address"]
+        expect(address["city"]).to eq params[:address][:city]
+        expect(address["state"]).to eq params[:address][:state]
         expect(json["data"]["center"]["capacity"]).to eq params[:center][:capacity].to_i
       end
     end

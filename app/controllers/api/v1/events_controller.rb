@@ -2,14 +2,14 @@ module Api::V1
   class EventsController < ApplicationController
     include Api::V1::Concerns::Docs::EventsController
     before_action :authenticate_user, only: %i[create update book]
-    before_action :find_center, only: %i[create]
     before_action :find_event, only: %i[show update destroy]
 
     def create
-      @event = @center.events.create!(event_params)
-      unless params[:address].nil?
-        @event.build_address(address_params).save!
-      end
+      @event = EventService.new({
+         event_params: event_params,
+         address_params: address_params,
+         center_id: params[:event][:center_id]
+      }).create_event
       json_response(@event, 'event', 'Event was created successfully', :created)
     end
 
@@ -31,13 +31,12 @@ module Api::V1
     end
 
     def address_params
-      params.require(:address).permit(
-        :address_line1, :address_line2, :city, :state, :country
-      )
-    end
+      return nil if params[:address].nil?
 
-    def find_center
-      @center = Center.find_by!(id: params[:center_id])
+      params.require(:address).permit(
+        :address_line1, :address_line2, :city, :state, :country,
+        :center_id
+      )
     end
 
     def find_event
