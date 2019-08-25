@@ -9,11 +9,13 @@ module Api::V1
 
     def create
       @center = current_user.centers.create!(center_params)
+      @center.build_address(address_params).save!
       json_response(@center, 'center', 'Center was successfully created', :created)
     end
 
     def update
       @center.update!(center_params)
+      @center.address.update!(address_params)
       json_response(@center, 'center', 'Center was successfully updated', :ok)
     end
 
@@ -29,7 +31,15 @@ module Api::V1
     private
 
     def center_params
-      params.require(:center).permit(:name, :description, :address, :capacity, :image)
+      params.require(:center).permit(:name, :description, :capacity, :image)
+    end
+
+    def address_params
+      return nil if params[:address].nil?
+
+      params.require(:address).permit(
+        :address_line1, :address_line2, :city, :state, :country
+      )
     end
 
     private
