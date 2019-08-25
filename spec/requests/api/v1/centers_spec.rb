@@ -11,7 +11,7 @@ RSpec.describe 'Centers API', type: :request do
 
     it 'returns the centers in the database' do
       expect(json).to_not be_empty
-      expect(json["data"]["centers"].count).to eq 10
+      expect(json['data']['centers'].count).to eq 10
     end
 
     it 'returns 200 as it\'s status code' do
@@ -25,7 +25,7 @@ RSpec.describe 'Centers API', type: :request do
 
       it 'should return the specified center' do
         expect(json).to_not be_empty
-        expect(json["data"]["center"]["id"]).to eq center_id
+        expect(json['data']['center']['id']).to eq center_id
       end
 
       it 'should return 200' do
@@ -42,7 +42,7 @@ RSpec.describe 'Centers API', type: :request do
       end
 
       it 'should return an error message' do
-        expect(json["message"]).to eq "Resource was not found"
+        expect(json['errors'][0]['messages']).to eq 'Resource was not found'
       end
     end
   end
@@ -88,7 +88,7 @@ RSpec.describe 'Centers API', type: :request do
       end
 
       it 'should have an error message' do
-        expect(json["error"]).to match 'unprocessable_entity'
+        expect(json["errors"][0]["name"]).to include "can't be blank"
       end
     end
   end

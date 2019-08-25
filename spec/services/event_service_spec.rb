@@ -56,15 +56,9 @@ RSpec.describe EventService do
     let!(:event_params) { attributes_for :event }
     let!(:address_params) { attributes_for :address }
     let(:event_service) {
-      EventService.new(
-        {
-          event_params: event_params,
-          address_params: address_params,
-          center_id: center.id
-        }
-      )
+      EventService.new({ event_params: event_params, center_id: center.id })
     }
-
+    before { event_params[:address_attributes] = address_params }
     context "when a center ID is passed" do
       it "creates an event belonging to a center" do
         event = event_service.create_event
@@ -78,12 +72,7 @@ RSpec.describe EventService do
         event_params.delete(:center_id)
       end
       let(:event_service) {
-        EventService.new(
-          {
-            event_params: event_params,
-            address_params: address_params,
-          }
-        )
+        EventService.new({ event_params: event_params })
       }
       it "creates an event not attached to a center" do
         event = event_service.create_event

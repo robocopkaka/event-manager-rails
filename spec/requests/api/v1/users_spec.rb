@@ -96,7 +96,7 @@ RSpec.describe 'Users API' do
       end
       it "should return an error" do
         expect(response).to have_http_status 404
-        expect(json["message"]).to match "Resource was not found"
+        expect(json['errors'][0]["messages"]).to match "Resource was not found"
       end
     end
   end

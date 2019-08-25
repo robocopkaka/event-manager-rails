@@ -43,7 +43,7 @@ export default function eventValidator(state) {
     valid = false;
   }
 
-  if (moment(end) .isBefore(begin, 'minute')) {
+  if (moment(end).isBefore(begin, 'minute')) {
     fieldsValidity.endTime = false;
     errorMessages.endTime = 'End time should not be earlier than start time';
     valid = false;
