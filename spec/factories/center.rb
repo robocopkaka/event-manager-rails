@@ -2,8 +2,8 @@
 FactoryBot.define do
   factory :center do
     name { Faker::Name.first_name }
-    description { Faker::Lorem.paragraph(3) }
-    capacity { Faker::Number.number(4) }
+    description { Faker::Lorem.paragraph(sentence_count: 3) }
+    capacity { Faker::Number.number(digits: 4) }
     user_id { create(:user).id }
 
     after(:create) do |center|

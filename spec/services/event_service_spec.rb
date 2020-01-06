@@ -53,10 +53,10 @@ RSpec.describe EventService do
   end
 
   describe "#create_event" do
-    let!(:event_params) { attributes_for :event }
+    let!(:event_params) { attributes_for :event, center_id: center.id }
     let!(:address_params) { attributes_for :address }
     let(:event_service) {
-      EventService.new({ event_params: event_params, center_id: center.id })
+      EventService.new({ event_params: event_params })
     }
     before { event_params[:address_attributes] = address_params }
     context "when a center ID is passed" do

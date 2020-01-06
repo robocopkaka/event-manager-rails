@@ -4,8 +4,8 @@
 FactoryBot.define do
   factory :event do
     name { "#{Faker::Name.first_name} #{Faker::Name.last_name}" }
-    guests { Faker::Number.number(4) }
-    description { Faker::Lorem.paragraph(3) }
+    guests { Faker::Number.number(digits: 4) }
+    description { Faker::Lorem.paragraph(sentence_count: 3) }
     # address
     # to avoid overlapping times use n^2 for start times
     sequence :start_time do |n|

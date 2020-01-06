@@ -12,7 +12,7 @@ RSpec.describe Event, type: :model do
 
   describe 'associations' do
     it { should belong_to(:user) }
-    it { should belong_to(:center) }
+    it { should belong_to(:center).optional }
   end
 
   describe 'validates uniqueness' do
