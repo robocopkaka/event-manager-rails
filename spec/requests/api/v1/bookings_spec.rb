@@ -31,7 +31,7 @@ RSpec.describe 'Bookings API' do
 
       it 'returns an error' do
         expect(response).to have_http_status 422
-        expect(json['message']).to include \
+        expect(json['errors'][0]['event_id']).to include \
           "You've already made a reservation for this event"
       end
     end
@@ -53,7 +53,7 @@ RSpec.describe 'Bookings API' do
       end
       it 'returns an error' do
         expect(response).to have_http_status 404
-        expect(json['message']).to eq 'Resource was not found'
+        expect(json['errors'][0]['messages']).to eq 'Resource was not found'
       end
     end
   end

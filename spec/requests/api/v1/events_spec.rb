@@ -68,7 +68,7 @@ RSpec.describe 'Events API' do
 
       it 'should contain an error message' do
         message = 'Start time or end time overlaps with existing time'
-        expect(json['message']).to match message
+        expect(json['errors'][0]['start_time']).to include message
       end
     end
 
@@ -93,17 +93,18 @@ RSpec.describe 'Events API' do
       end
 
       it 'should have an error message' do
-        expect(json['message']).to match 'Start time is in the past'
+        expect(json['errors'][0]['start_time']).to include 'Start time is in the past'
       end
     end
 
     context "when no center id is passed" do
       let!(:params) {{
         event: FactoryBot.attributes_for(:event),
-        address: FactoryBot.attributes_for(:address)
       }}
       before do
         params[:event].delete(:center_id)
+        params[:event][:address] = FactoryBot.attributes_for(:address)
+
         post "/api/v1/events",
              params: params,
              headers: authenticated_headers(user_id)
@@ -111,9 +112,9 @@ RSpec.describe 'Events API' do
       it "creates an event successfully" do
         address = json["data"]["event"]["address"]
         expect(response).to have_http_status 201
-        expect(address["address_line1"]).to eq params[:address][:address_line1]
-        expect(address["address_line2"]).to eq params[:address][:address_line2]
-        expect(address["city"]).to eq params[:address][:city]
+        expect(address["address_line1"]).to eq params[:event][:address][:address_line1]
+        expect(address["address_line2"]).to eq params[:event][:address][:address_line2]
+        expect(address["city"]).to eq params[:event][:address][:city]
       end
     end
   end
@@ -215,8 +216,9 @@ RSpec.describe 'Events API' do
       before { get api_v1_event_path(id: 1000) }
 
       it "should return an error" do
+        # binding.pry
         expect(response).to have_http_status(404)
-        expect(json["message"]).to match "Resource was not found"
+        expect(json["errors"][0]["messages"]).to match "Resource was not found"
       end
     end
   end

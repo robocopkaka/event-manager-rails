@@ -3,7 +3,7 @@ module Error
     def self.included(clazz)
       clazz.class_eval do
         rescue_from ActiveRecord::RecordInvalid do |e|
-          respond(:unprocessable_entity, 422, e.to_s )
+          respond_invalid_record(:unprocessable_entity, 422, e.record.errors )
         end
         rescue_from ActiveRecord::RecordNotUnique do |e|
           respond(:conflict, 409, e.to_s )
@@ -21,6 +21,11 @@ module Error
 
     def respond(_error, _status, _message)
       json = Helpers::Render.json(_error, _status, _message)
+      render json: json, status: _status
+    end
+
+    def respond_invalid_record(_error, _status, _message)
+      json = Helpers::Render.json_invalid_record(_error, _status, _message)
       render json: json, status: _status
     end
   end
