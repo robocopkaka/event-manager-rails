@@ -9,13 +9,14 @@ class User < ApplicationRecord
   has_many :bookings
   has_many :reservations, through: :bookings, source: :event
 
-  # validates_uniqueness_of :email
   validates_presence_of :name, :email, :password, :password_confirmation
   validates :email, uniqueness: { case_sensitive: false}, format: { with: EmailValidation::REGEX }
 
   concerning :Events do
     def all_events
-      events.order(created_at: :asc)
+      events
+        .includes([bookings: :user], :address, :center, :user)
+        .order(created_at: :asc)
     end
 
     def upcoming_events(filter=nil)

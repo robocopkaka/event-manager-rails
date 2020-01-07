@@ -16,7 +16,7 @@ class EventService
       elsif params[:user_id].present?
         User.find_by(id: params[:user_id]).upcoming_events(params[:filter])
       else
-        Event.all
+        Event.includes([bookings: :user], :address, :center, :user).all
       end
     end
   end

@@ -15,7 +15,7 @@ module Api::V1
 
     def index
       @events = EventService.fetch_events(params)
-      json_response(@events, 'events', 'Successfully retrieved events', :ok)
+      paginate @events, per_page: params[:limit] || 10
     end
 
     def show
