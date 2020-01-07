@@ -19,5 +19,5 @@ class Event < ApplicationRecord
                           unless: -> { center.nil? }
   validates :start_time, timeliness: { type: :datetime }
   validates :end_time, timeliness: { type: :datetime }
-  validates_with DatesValidator, unless: -> { center.nil? }
+  validates_with DatesValidator
 end

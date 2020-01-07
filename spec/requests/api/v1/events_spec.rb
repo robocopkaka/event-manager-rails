@@ -97,24 +97,62 @@ RSpec.describe 'Events API' do
       end
     end
 
-    context "when no center id is passed" do
-      let!(:params) {{
-        event: FactoryBot.attributes_for(:event),
-      }}
+    describe 'when no center id is passed' do
+      let!(:params) do
+        {
+          event: FactoryBot.attributes_for(:event)
+        }
+      end
       before do
         params[:event].delete(:center_id)
         params[:event][:address] = FactoryBot.attributes_for(:address)
-
-        post "/api/v1/events",
-             params: params,
-             headers: authenticated_headers(user_id)
       end
-      it "creates an event successfully" do
-        address = json["data"]["event"]["address"]
-        expect(response).to have_http_status 201
-        expect(address["address_line1"]).to eq params[:event][:address][:address_line1]
-        expect(address["address_line2"]).to eq params[:event][:address][:address_line2]
-        expect(address["city"]).to eq params[:event][:address][:city]
+
+      context 'when a request is sent to create an event' do
+        before do
+          post '/api/v1/events',
+               params: params,
+               headers: authenticated_headers(user_id)
+        end
+        it 'creates an event successfully' do
+          address = json['data']['event']['address']
+          expect(response).to have_http_status 201
+          expect(address['address_line1'])
+            .to eq params[:event][:address][:address_line1]
+          expect(address['address_line2'])
+            .to eq params[:event][:address][:address_line2]
+          expect(address['city'])
+            .to eq params[:event][:address][:city]
+        end
+      end
+
+      context 'when an event is created with wrong dates' do
+        before do
+          params[:event][:end_time] = params[:event][:start_time] - 2.hours
+          post '/api/v1/events',
+               params: params,
+               headers: authenticated_headers(user_id)
+        end
+        it 'returns an error' do
+          expect(json['errors'].first['end_time'])
+            .to include 'End time is older than the start time'
+        end
+      end
+
+      context 'when a user already has an event around the same time' do
+        before do
+          post '/api/v1/events',
+               params: params,
+               headers: authenticated_headers(user_id)
+        end
+        it 'should return an error' do
+          post '/api/v1/events',
+               params: params,
+               headers: authenticated_headers(user_id)
+
+          expect(json['errors'].first['start_time'])
+            .to include 'You have an overlapping event at this time'
+        end
       end
     end
   end
@@ -191,7 +229,6 @@ RSpec.describe 'Events API' do
 
         it "should return an empty array" do
           expect(response).to have_http_status(200)
-          # binding.pry
           expect(json["data"]["events"].count).to eq 0
         end
       end
@@ -216,7 +253,6 @@ RSpec.describe 'Events API' do
       before { get api_v1_event_path(id: 1000) }
 
       it "should return an error" do
-        # binding.pry
         expect(response).to have_http_status(404)
         expect(json["errors"][0]["messages"]).to match "Resource was not found"
       end

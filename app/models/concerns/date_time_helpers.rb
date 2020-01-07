@@ -1,7 +1,7 @@
 module DateTimeHelpers
   def time_overlaps?(existing_times, new_time)
-    start_time = parse_datetime(new_time[:start_time].to_s, :start_time)
-    end_time = parse_datetime(new_time[:end_time].to_s, :end_time)
+    start_time = parse_datetime(new_time[:start_time].to_s)
+    end_time = parse_datetime(new_time[:end_time].to_s)
     times = existing_times.select do |time_group|
       # time_group[0] -> start times | time_group[1] -> end times
       start_time < time_group[1] && end_time > time_group[0]
@@ -16,8 +16,8 @@ module DateTimeHelpers
   end
 
   def dates_in_past?(record)
-    start_time = parse_datetime(record.start_time.to_s, :start_time)
-    end_time = parse_datetime(record.end_time.to_s, :end_time)
+    start_time = parse_datetime(record.start_time.to_s)
+    end_time = parse_datetime(record.end_time.to_s)
     if start_time < DateTime.now
       errors.add(:start_time, 'is in the past')
     end
@@ -27,12 +27,9 @@ module DateTimeHelpers
     end
   end
 
-  def parse_datetime(datetime, symbol)
-    begin
-      datetime = DateTime.parse(datetime)
-    rescue ArgumentError => e
-      errors.add(symbol, e.to_s)
-    end
-    datetime
+  def parse_datetime(datetime)
+    DateTime.parse(datetime)
+  rescue ArgumentError, TypeError
+    "not a valid datetime value"
   end
 end
