@@ -14,7 +14,9 @@ class Center < ApplicationRecord
   scope :order_by_id, -> { order(id: :asc) }
 
   def all_events
-    events.order(created_at: :asc)
+    events
+      .includes([bookings: :user], :address, :center, :user)
+      .order(created_at: :asc)
   end
 
   def upcoming_events(filter=nil)
