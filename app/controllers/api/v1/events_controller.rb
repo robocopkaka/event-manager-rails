@@ -1,5 +1,6 @@
 module Api::V1
   class EventsController < ApplicationController
+    require 'will_paginate/array'
     include Api::V1::Concerns::Docs::EventsController
     before_action :authenticate_user, only: %i[create update book]
     before_action :find_event, only: %i[show update destroy]
@@ -15,7 +16,7 @@ module Api::V1
 
     def index
       @events = EventService.fetch_events(params)
-      paginate @events, per_page: params[:limit] || 10
+      paginate @events, per_page: params[:limit] || 9
     end
 
     def show

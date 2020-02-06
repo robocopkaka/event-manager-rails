@@ -169,9 +169,9 @@ RSpec.describe 'Events API' do
       context "when no upcoming flag is set in the query" do
         before { get api_v1_center_events_path(center_id) }
         it "returns all the events" do
-          returned_events = json["data"]["events"]
+          returned_events = json['events']
           expect(response).to have_http_status(200)
-          expect(returned_events.count).to eq 10
+          expect(returned_events.count).to eq 9
           expect(returned_events.first["name"]).to eq Event.first.name
         end
       end
@@ -179,29 +179,31 @@ RSpec.describe 'Events API' do
       context "when an upcoming flag is set" do
         before { get api_v1_center_events_path(center_id), params: { filter: "upcoming" } }
         it "returns only future events" do
-          returned_events = json["data"]["events"]
+          returned_events = json['events']
           expect(response).to have_http_status(200)
           expect(returned_events.count).to eq 5
         end
       end
 
-      context "when the center has no events" do
+      context 'when the center has no events' do
         let!(:new_center) { create :center }
-        before { get api_v1_center_events_path(new_center.id) }
+        before do
+          get api_v1_center_events_path(new_center.id)
+        end
 
         it "should return an empty array" do
           expect(response).to have_http_status(200)
-          expect(json["data"]["events"].count).to eq 0
+          expect(json['events'].count).to eq 0
         end
       end
     end
 
-    describe "when user is in params" do
+    describe 'when user is in params' do
       let!(:events) { create_list :event, 5, center: center, user: new_user }
       before { get api_v1_user_events_path(user_id) }
-      context "when no upcoming flag is set in the query" do
+      context 'when no upcoming flag is set in the query' do
         it "returns all the events" do
-          returned_events = json["data"]["events"]
+          returned_events = json['events']
           expect(response).to have_http_status(200)
           expect(returned_events.count).to eq 5
           expect(returned_events.first["name"]).to eq Event.first.name
@@ -216,20 +218,59 @@ RSpec.describe 'Events API' do
           create_list :event, 5, :skip_validate, center: center
           get api_v1_user_events_path(user_id), params: { filter: "upcoming" }
         end
-        it "returns only future events" do
-          returned_events = json["data"]["events"]
+        it 'returns only future events' do
+          returned_events = json['events']
           expect(response).to have_http_status(200)
           expect(returned_events.count).to eq 5
         end
       end
 
-      context "when the user has no events" do
+      context 'when the user has no events' do
         let!(:different_user) { create :user }
         before { get api_v1_user_events_path(user_id: different_user.id) }
 
         it "should return an empty array" do
           expect(response).to have_http_status(200)
-          expect(json["data"]["events"].count).to eq 0
+          expect(json['events'].count).to eq 0
+        end
+      end
+    end
+
+    describe 'pagination' do
+      let!(:events) { create_list :event, 20 }
+      before do
+        get api_v1_events_path
+      end
+      context 'when no limit is set' do
+        it 'returns the first 9 events' do
+          expect(json['events'].count).to eq 9
+          returned_event_ids = json['events'].pluck('id')
+          event_ids = Event.first(9).pluck(:id)
+          expect(returned_event_ids.count).to eq 9
+          expect(event_ids).to eq returned_event_ids
+        end
+      end
+
+      context 'when limit is set' do
+        before { get api_v1_events_path(limit: 5) }
+        it 'returns the set number of events' do
+          expect(json['events'].count).to eq 5
+        end
+      end
+
+      context 'when page is set' do
+        before { get api_v1_events_path(page:  3) }
+        it 'returns the events for the current page' do
+          returned_event_ids = json['events'].pluck('id')
+          event_ids = Event.last(2).pluck(:id)
+          expect(event_ids).to eq returned_event_ids
+        end
+      end
+
+      context 'when page is out of limits' do
+        before { get api_v1_events_path(page: 4) }
+        it 'returns an empty array' do
+          expect(json['events'].count).to eq 0
         end
       end
     end
