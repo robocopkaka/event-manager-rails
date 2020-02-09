@@ -20,4 +20,7 @@ class Event < ApplicationRecord
   validates :start_time, timeliness: { type: :datetime }
   validates :end_time, timeliness: { type: :datetime }
   validates_with DatesValidator
+
+  scope :upcoming_events, -> { where('start_time > ?', Time.now).order(created_at: :asc) }
+  scope :past_events, -> { where('start_time < ?', Time.now).order(created_at: :asc) }
 end

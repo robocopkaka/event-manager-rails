@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class EventService
   def initialize(params)
     @event_params = params[:event_params]
@@ -13,11 +14,11 @@ class EventService
   class << self
     def fetch_events(params={})
       if params[:center_id].present?
-        events = Center.find_by(id: params[:center_id]).upcoming_events(params[:filter])
+        events = Center.find_by(id: params[:center_id]).upcoming_events
       elsif params[:user_id].present?
-        events = User.find_by(id: params[:user_id]).upcoming_events(params[:filter])
+        events = User.find_by(id: params[:user_id]).upcoming_events
       else
-        events = Event.includes([bookings: :user], :address, :center, :user).all
+        events = Event.upcoming_events
       end
       events
     end

@@ -3,3 +3,6 @@ AllCops:
     - 'client/**/*'
     - 'db/schema.rb'
     - 'db/migrate/**/*'
+
+Style/StringLiterals:
+  EnforcedStyle: double_quotes

@@ -19,10 +19,12 @@ class Center < ApplicationRecord
       .order(created_at: :asc)
   end
 
-  def upcoming_events(filter=nil)
-    return all_events if filter.nil?
-
+  def upcoming_events
     events.where('start_time > ?', Time.now).order(created_at: :asc)
+  end
+
+  def past_events
+    all_events.where('start_time < ?', Time.now).order(created_at: :asc)
   end
 
   def find_event!(id)
