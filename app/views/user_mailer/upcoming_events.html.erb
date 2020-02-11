@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+</head>
+<body>
+<h1>Hi, <%= @user.name %></h1>
+<p>
+  Here's a list of your upcoming events:
+</p>
+<div>
+  <ul>
+    <% @events.each do |event| %>
+      <li>
+        <p style="font-size: 20px; font-weight: bold;">
+          <%= link_to event.name, api_v1_events_url(event) %>
+        </p>
+        <p><%= event.start_time.strftime("%B %d, %Y") %></p>
+        <p><%= event.address.humanize_address %></p>
+      </li>
+    <% end %>
+  </ul>
+</div>
+</body>
+</html>

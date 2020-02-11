@@ -21,6 +21,11 @@ class Event < ApplicationRecord
   validates :end_time, timeliness: { type: :datetime }
   validates_with DatesValidator
 
-  scope :upcoming_events, -> { where('start_time > ?', Time.now).order(created_at: :asc) }
-  scope :past_events, -> { where('start_time < ?', Time.now).order(created_at: :asc) }
+  scope :upcoming_events, -> { where("start_time > ?", Time.now).order(created_at: :asc) }
+  scope :past_events, -> { where("start_time < ?", Time.now).order(created_at: :asc) }
+
+  # overwrite address getter to use center's address if event doesn't have one
+  def address
+    super || center.address
+  end
 end
