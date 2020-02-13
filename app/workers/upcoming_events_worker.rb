@@ -8,14 +8,19 @@ class UpcomingEventsWorker
     users = User.all
 
     users.each do |user|
-      events = user.reservations.select do |event|
-        interval = ((event.start_time - Time.now) / (24.hours.to_i)).ceil
-        interval.in?(1..8)
-      end
+      events = find_events(user)
       unless events.empty?
         UserMailer.with(user: user, events: events).upcoming_events.deliver_now
-        puts "sent"
       end
+    end
+  end
+
+  private
+
+  def find_events(user)
+    user.reservations.select do |event|
+      interval = ((event.start_time - Time.now) / 24.hours.to_i).ceil
+      interval.in?(1..8)
     end
   end
 end

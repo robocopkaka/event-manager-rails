@@ -11,6 +11,8 @@ class Center < ApplicationRecord
   validates :image, blob: {
     content_type: %w[image/png image/jpg image/jpeg]
   }
+
+  default_scope -> { includes(events: :address) }
   scope :order_by_id, -> { order(id: :asc) }
 
   def all_events

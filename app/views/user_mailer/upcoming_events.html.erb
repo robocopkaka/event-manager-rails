@@ -16,7 +16,7 @@
           <%= link_to event.name, api_v1_events_url(event) %>
         </p>
         <p><%= event.start_time.strftime("%B %d, %Y") %></p>
-        <p><%= event.address.humanize_address %></p>
+        <p><%= event.resolve_address.humanize_address %></p>
       </li>
     <% end %>
   </ul>

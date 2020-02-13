@@ -24,8 +24,10 @@ class Event < ApplicationRecord
   scope :upcoming_events, -> { where("start_time > ?", Time.now).order(created_at: :asc) }
   scope :past_events, -> { where("start_time < ?", Time.now).order(created_at: :asc) }
 
-  # overwrite address getter to use center's address if event doesn't have one
-  def address
-    super || center.address
+  # return center's address if event doesn't have one
+  def resolve_address
+    return address unless address.nil?
+
+    center.address
   end
 end
