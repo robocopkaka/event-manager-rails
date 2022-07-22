@@ -263,7 +263,7 @@ GEM
     timeliness (0.4.3)
     tins (1.23.0)
       sync
-    tzinfo (1.2.6)
+    tzinfo (1.2.10)
       thread_safe (~> 0.1)
     unf (0.1.4)
       unf_ext
